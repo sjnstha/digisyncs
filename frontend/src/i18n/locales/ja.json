@@ -1,0 +1,17 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "about": "会社概要",
+    "contact": "お問い合わせ"
+  },
+  "health": {
+    "checking": "API接続確認中...",
+    "ok": "APIに接続済み",
+    "error": "APIに接続できません"
+  },
+  "language": {
+    "en": "英語",
+    "ja": "日本語",
+    "ne": "ネパール語"
+  }
+}

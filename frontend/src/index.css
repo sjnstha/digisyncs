@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Phase 3: CSS variables set dynamically from SiteConfig API */
+:root {
+  --color-primary: #0ea5e9;
+  --color-secondary: #64748b;
+  --color-accent: #f59e0b;
+  --font-site: 'Noto Sans', sans-serif;
+}

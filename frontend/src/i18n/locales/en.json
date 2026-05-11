@@ -1,0 +1,17 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "health": {
+    "checking": "Checking API connection...",
+    "ok": "API is connected",
+    "error": "Cannot reach API"
+  },
+  "language": {
+    "en": "English",
+    "ja": "Japanese",
+    "ne": "Nepali"
+  }
+}
