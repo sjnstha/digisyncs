@@ -25,8 +25,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "apps.core",
-    # Phase 2: "apps.sites_config",
-    # Phase 2: "apps.translations",
+    "apps.sites_config",
+    "apps.translations",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
