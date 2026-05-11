@@ -8,6 +8,7 @@ urlpatterns = [
     path("api/", include("apps.core.urls")),
     path("api/", include("apps.sites_config.urls")),
     path("api/", include("apps.translations.urls")),
+    path("api/content/", include("apps.content.urls")),
 ]
 
 if settings.DEBUG:

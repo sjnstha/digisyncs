@@ -20,15 +20,13 @@ class SiteConfigSerializer(serializers.ModelSerializer):
         exclude = ["id", "country", "logo", "favicon"]
 
     def get_logo_url(self, obj):
-        request = self.context.get("request")
-        if obj.logo and request:
-            return request.build_absolute_uri(obj.logo.url)
+        if obj.logo:
+            return obj.logo.url   # returns /media/logos/filename.png
         return None
 
     def get_favicon_url(self, obj):
-        request = self.context.get("request")
-        if obj.favicon and request:
-            return request.build_absolute_uri(obj.favicon.url)
+        if obj.favicon:
+            return obj.favicon.url
         return None
 
 

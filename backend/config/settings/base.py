@@ -27,6 +27,7 @@ LOCAL_APPS = [
     "apps.core",
     "apps.sites_config",
     "apps.translations",
+    "apps.content",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
