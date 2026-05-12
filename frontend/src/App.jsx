@@ -3,7 +3,9 @@ import { SiteProvider } from "./context/SiteContext";
 import { useSite } from "./context/SiteContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import ScrollToTop from "./components/layout/ScrollToTop";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
+import "./i18n/index.js";
 
 import HomePage from "./pages/Home/index";
 import AboutPage from "./pages/About/index";
@@ -16,20 +18,30 @@ function AppShell() {
   const { loading, error } = useSite();
 
   if (loading) return <LoadingSpinner fullPage />;
+
   if (error)
     return (
       <div className="min-h-screen flex items-center justify-center text-center px-4">
         <div>
-          <p className="text-red-500 font-semibold mb-2">
+          <div className="text-4xl mb-4">⚠️</div>
+          <p
+            className="font-semibold mb-2"
+            style={{ color: "var(--color-primary)" }}
+          >
             Could not load site configuration
           </p>
           <p className="text-sm text-gray-500">{error}</p>
+          <p className="text-xs text-gray-400 mt-2">
+            Make sure Django is running and <code>/api/site/JP/</code> returns
+            data.
+          </p>
         </div>
       </div>
     );
 
   return (
     <div style={{ fontFamily: "var(--font-site)", color: "var(--color-text)" }}>
+      <ScrollToTop /> {/* ← scrolls to top on every page change */}
       <Navbar />
       <main>
         <Routes>

@@ -9,19 +9,16 @@ const DEFAULT_COUNTRY = "JP";
 export function SiteProvider({ children }) {
   const { i18n } = useTranslation();
   const [countryCode, setCountryCode] = useState(
-    () => localStorage.getItem("country") || DEFAULT_COUNTRY
+    () => localStorage.getItem("country") || DEFAULT_COUNTRY,
   );
-  const [siteData, setSiteData] = useState(null);   // { country, config, nav }
+  const [siteData, setSiteData] = useState(null); // { country, config, nav }
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([
-      fetchSiteData(countryCode),
-      fetchStats(countryCode),
-    ])
+    Promise.all([fetchSiteData(countryCode), fetchStats(countryCode)])
       .then(([site, statsData]) => {
         setSiteData(site);
         setStats(statsData);
@@ -41,13 +38,19 @@ export function SiteProvider({ children }) {
   };
 
   return (
-    <SiteContext.Provider value={{
-      countryCode, switchCountry,
-      siteData, stats, loading, error,
-      config: siteData?.config || null,
-      nav: siteData?.nav || [],
-      country: siteData?.country || null,
-    }}>
+    <SiteContext.Provider
+      value={{
+        countryCode,
+        switchCountry,
+        siteData,
+        stats,
+        loading,
+        error,
+        config: siteData?.config || null,
+        nav: siteData?.nav || [],
+        country: siteData?.country || null,
+      }}
+    >
       {children}
     </SiteContext.Provider>
   );
@@ -63,14 +66,23 @@ export function useSite() {
 function applyTheme(config) {
   if (!config) return;
   const root = document.documentElement;
-  root.style.setProperty("--color-primary",    config.color_primary    || "#2d3eb0");
-  root.style.setProperty("--color-secondary",  config.color_secondary  || "#64748b");
-  root.style.setProperty("--color-accent",     config.color_accent     || "#e8960a");
-  root.style.setProperty("--color-bg",         config.color_bg         || "#ffffff");
-  root.style.setProperty("--color-text",       config.color_text       || "#0f1940");
-  root.style.setProperty("--color-navbar-bg",  config.color_navbar_bg  || "#1e2d7d");
-  root.style.setProperty("--color-navbar-text",config.color_navbar_text|| "#ffffff");
-  root.style.setProperty("--font-site",        `'${config.font_primary}', sans-serif`);
+  root.style.setProperty("--color-primary", config.color_primary || "#2d3eb0");
+  root.style.setProperty(
+    "--color-secondary",
+    config.color_secondary || "#64748b",
+  );
+  root.style.setProperty("--color-accent", config.color_accent || "#e8960a");
+  root.style.setProperty("--color-bg", config.color_bg || "#ffffff");
+  root.style.setProperty("--color-text", config.color_text || "#0f1940");
+  root.style.setProperty(
+    "--color-navbar-bg",
+    config.color_navbar_bg || "#1e2d7d",
+  );
+  root.style.setProperty(
+    "--color-navbar-text",
+    config.color_navbar_text || "#ffffff",
+  );
+  root.style.setProperty("--font-site", `'${config.font_primary}', sans-serif`);
 
   // Inject Google Font dynamically
   if (config.font_primary) {

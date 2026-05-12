@@ -3,32 +3,32 @@ import { useSite } from "../../context/SiteContext";
 import { useContent } from "../../hooks/useContent";
 import { fetchTeam } from "../../api/contentApi";
 import { useLang } from "../../hooks/useLang";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import PageHero from "../../components/ui/PageHero";
 import SectionTitle from "../../components/ui/SectionTitle";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
-import PageHero from "../../components/ui/PageHero";
 
-function Avatar({ name, photoUrl, size = "lg" }) {
-  const dim = size === "lg" ? "w-32 h-32" : "w-20 h-20";
-  const txt = size === "lg" ? "text-3xl" : "text-xl";
+function Avatar({ name, photoUrl }) {
   const initials = name
     .split(" ")
     .map((n) => n[0])
     .join("")
     .slice(0, 2)
     .toUpperCase();
-  if (photoUrl) {
+  if (photoUrl)
     return (
       <img
         src={photoUrl}
         alt={name}
-        className={`${dim} rounded-full object-cover mx-auto mb-4`}
+        className="w-28 h-28 rounded-full object-cover mx-auto mb-4 ring-4 ring-white shadow-lg"
       />
     );
-  }
   return (
     <div
-      className={`${dim} rounded-full mx-auto mb-4 flex items-center justify-center ${txt} font-bold text-white`}
-      style={{ background: "var(--color-primary)" }}
+      className="w-28 h-28 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-black text-white shadow-lg"
+      style={{
+        background: "linear-gradient(135deg, var(--color-primary), #4a5bcf)",
+      }}
     >
       {initials}
     </div>
@@ -40,50 +40,58 @@ export default function AboutPage() {
   const { config } = useSite();
   const { data: team, loading } = useContent(fetchTeam);
   const tl = useLang();
+  const missionRef = useScrollAnimation();
+  const valuesRef = useScrollAnimation();
+  const teamRef = useScrollAnimation();
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
-      {/* Page hero */}
-      {/* <section className="py-16" style={{ background: "var(--color-primary)" }}>
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            {t("about.title", "About Us")}
-          </h1>
-          <p className="text-blue-100 text-lg">
-            {t("about.subtitle", "Connecting dreams to reality since 2010")}
-          </p>
-        </div>
-      </section> */}
       <PageHero
+        badge="OUR STORY"
         title={t("about.title", "About Us")}
         subtitle={t(
           "about.subtitle",
-          "Connecting dreams to reality since 2010",
+          "Connecting ambitious students to world-class education in Japan since 2010",
         )}
       />
 
       {/* Mission */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            ref={missionRef}
+            className="scroll-fade grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+          >
             <div>
-              <h2
-                className="text-2xl font-bold mb-4"
-                style={{ color: "var(--color-primary)" }}
+              <span
+                className="inline-block text-xs font-bold tracking-widest px-3 py-1 rounded-full mb-5"
+                style={{ background: "#fff4d6", color: "var(--color-accent)" }}
               >
-                {t("about.mission.title", "Our Mission")}
+                OUR MISSION
+              </span>
+              <h2
+                className="text-3xl font-extrabold mb-5 leading-tight"
+                style={{
+                  color: "var(--color-primary)",
+                  letterSpacing: "-0.5px",
+                }}
+              >
+                {t(
+                  "about.mission.title",
+                  "We Believe Every Student Deserves World-Class Education",
+                )}
               </h2>
               <p
-                className="text-base leading-relaxed mb-4"
+                className="text-base leading-relaxed mb-6"
                 style={{ color: "var(--color-secondary)" }}
               >
                 {t(
                   "about.mission.body",
-                  "We believe every student deserves access to world-class education. 3 Star Educational Consultant bridges the gap between aspiring students and top institutions in Japan, providing end-to-end guidance at every step of the journey.",
+                  "3 Star Educational Consultant bridges the gap between aspiring students and top institutions in Japan, providing end-to-end guidance at every step — from school selection and language preparation to visa processing and post-arrival support.",
                 )}
               </p>
               <blockquote
-                className="border-l-4 pl-4 italic text-base"
+                className="border-l-4 pl-5 py-2 italic text-base font-semibold"
                 style={{
                   borderColor: "var(--color-accent)",
                   color: "var(--color-primary)",
@@ -92,62 +100,103 @@ export default function AboutPage() {
                 "We Connect You to the World."
               </blockquote>
             </div>
-            <div className="rounded-xl overflow-hidden">
-              {config?.logo_url ? (
-                <img
-                  src={config.logo_url}
-                  alt={config.site_name}
-                  className="w-full max-w-sm mx-auto object-contain p-8"
-                  style={{ background: "#f8f9ff", borderRadius: "1rem" }}
-                />
-              ) : (
+
+            <div className="relative">
+              <div
+                className="rounded-2xl overflow-hidden shadow-xl"
+                style={{
+                  background: "linear-gradient(135deg, #e8ecfa, #f8f9ff)",
+                }}
+              >
+                {config?.logo_url ? (
+                  <img
+                    src={config.logo_url}
+                    alt={config.site_name}
+                    className="w-full max-w-sm mx-auto object-contain p-12"
+                  />
+                ) : (
+                  <div className="h-56 flex items-center justify-center text-6xl">
+                    🎓
+                  </div>
+                )}
+              </div>
+              {/* Floating stat badge */}
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lg px-5 py-3 border border-gray-100">
                 <div
-                  className="h-48 rounded-xl flex items-center justify-center"
-                  style={{ background: "#f8f9ff" }}
+                  className="font-black text-2xl"
+                  style={{ color: "var(--color-accent)" }}
                 >
-                  <span className="text-5xl">🎓</span>
+                  500+
                 </div>
-              )}
+                <div className="text-xs font-semibold text-gray-500">
+                  Students placed
+                </div>
+              </div>
+              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-lg px-5 py-3 border border-gray-100">
+                <div
+                  className="font-black text-2xl"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  98%
+                </div>
+                <div className="text-xs font-semibold text-gray-500">
+                  Visa success
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-16" style={{ background: "#f8f9ff" }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <SectionTitle title={t("about.values.title", "Our Values")} />
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <section className="py-20" style={{ background: "#f8f9ff" }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionTitle title={t("about.values.title", "Our Core Values")} />
+          <div
+            ref={valuesRef}
+            className="scroll-fade-group grid grid-cols-1 sm:grid-cols-3 gap-6"
+          >
             {[
               {
                 icon: "🌟",
                 title: "Integrity",
-                desc: "Honest guidance with your best interests at heart.",
+                desc: "Honest, transparent guidance with your best interests always at heart.",
+                color: "var(--color-primary)",
               },
               {
                 icon: "🤝",
                 title: "Commitment",
-                desc: "We stay with you from application to arrival.",
+                desc: "We stay with you from your very first inquiry to post-arrival settlement.",
+                color: "var(--color-accent)",
               },
               {
                 icon: "🌏",
                 title: "Excellence",
-                desc: "Only the best schools and opportunities for our students.",
+                desc: "Only the best schools, opportunities, and outcomes for every student.",
+                color: "var(--color-primary)",
               },
             ].map((v) => (
               <div
                 key={v.title}
-                className="bg-white rounded-xl p-6 text-center shadow-sm"
+                className="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-shadow border border-gray-100"
               >
-                <div className="text-4xl mb-3">{v.icon}</div>
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm"
+                  style={{
+                    background:
+                      v.color === "var(--color-accent)" ? "#fff4d6" : "#e8ecfa",
+                  }}
+                >
+                  {v.icon}
+                </div>
                 <h3
-                  className="font-bold mb-2"
+                  className="font-bold text-lg mb-2"
                   style={{ color: "var(--color-primary)" }}
                 >
                   {v.title}
                 </h3>
                 <p
-                  className="text-sm"
+                  className="text-sm leading-relaxed"
                   style={{ color: "var(--color-secondary)" }}
                 >
                   {v.desc}
@@ -159,18 +208,30 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionTitle title={t("team.section_title", "Meet Our Team")} />
           {loading ? (
             <LoadingSpinner />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {team?.map((member) => (
+            <div
+              ref={teamRef}
+              className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {team?.map((member, i) => (
                 <div
                   key={member.id}
-                  className="text-center rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow"
+                  className="text-center rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1 relative overflow-hidden border border-gray-100"
                 >
+                  <div
+                    className="absolute top-0 left-0 right-0 h-1.5"
+                    style={{
+                      background:
+                        i % 2 === 0
+                          ? "var(--color-primary)"
+                          : "var(--color-accent)",
+                    }}
+                  />
                   <Avatar name={member.name} photoUrl={member.photo_url} />
                   <h3
                     className="font-bold text-lg"
@@ -179,8 +240,8 @@ export default function AboutPage() {
                     {member.name}
                   </h3>
                   <p
-                    className="text-sm font-medium mt-1 mb-3"
-                    style={{ color: "var(--color-accent)" }}
+                    className="text-xs font-bold mt-1 mb-4 px-3 py-1 rounded-full inline-block"
+                    style={{ background: "#fff4d6", color: "#92400e" }}
                   >
                     {tl(member, "role")}
                   </p>

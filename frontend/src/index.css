@@ -2,10 +2,225 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Phase 3: CSS variables set dynamically from SiteConfig API */
+/* ─── CSS Variables ─────────────────────────────────────────── */
 :root {
-  --color-primary: #0ea5e9;
+  --color-primary: #2d3eb0;
   --color-secondary: #64748b;
-  --color-accent: #f59e0b;
-  --font-site: 'Noto Sans', sans-serif;
+  --color-accent: #e8960a;
+  --color-bg: #ffffff;
+  --color-text: #0f1940;
+  --color-navbar-bg: #1e2d7d;
+  --color-navbar-text: #ffffff;
+  --font-site: "Noto Sans JP", sans-serif;
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-site);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Prevent media overflow */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── Hero entry animation ──────────────────────────────────── */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-up {
+  animation: heroFadeUp 0.8s ease forwards;
+}
+
+/* ─── Scroll fade animation ─────────────────────────────────── */
+/*
+  SAFE VERSION:
+  Content stays visible if JS fails.
+*/
+
+.scroll-fade {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+/* JS-enabled state */
+.js-enabled .scroll-fade {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.js-enabled .scroll-fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Stagger group animation ───────────────────────────────── */
+
+.scroll-fade-group > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+/* Only animate when JS active */
+.js-enabled .scroll-fade-group > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(1) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.03s;
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(2) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.09s;
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(3) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.15s;
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(4) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.21s;
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(5) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.27s;
+}
+
+.js-enabled .scroll-fade-group.visible > *:nth-child(6) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.33s;
+}
+
+/* ─── Floating animation ────────────────────────────────────── */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float-anim {
+  animation: floatY 4s ease-in-out infinite;
+}
+
+/* ─── Gradient text ─────────────────────────────────────────── */
+
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  color: var(--color-primary); /* fallback */
+}
+
+/* ─── Glass card ────────────────────────────────────────────── */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Section spacing helpers ───────────────────────────────── */
+
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* ─── Custom scrollbar ──────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #edf2f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(45, 62, 176, 0.5);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 62, 176, 0.7);
+}
+
+/* ─── Selection ─────────────────────────────────────────────── */
+
+::selection {
+  background: rgba(232, 150, 10, 0.2);
+  color: var(--color-text);
+}
+
+/* ─── Focus ring ────────────────────────────────────────────── */
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

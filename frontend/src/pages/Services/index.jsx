@@ -2,84 +2,111 @@ import { useTranslation } from "react-i18next";
 import { useContent } from "../../hooks/useContent";
 import { fetchServices } from "../../api/contentApi";
 import { useLang } from "../../hooks/useLang";
-import SectionTitle from "../../components/ui/SectionTitle";
-import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
+
+const SERVICE_ICONS = ["✈️", "📄", "📚", "🏆", "🏠", "💼"];
 
 export default function ServicesPage() {
   const { t } = useTranslation();
   const { data: services, loading } = useContent(fetchServices);
   const tl = useLang();
+  const gridRef = useScrollAnimation();
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
-      {/* <section className="py-14" style={{ background: "var(--color-primary)" }}>
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            {t("services.page_title", "Our Services")}
-          </h1>
-          <p className="text-blue-100">
-            {t("services.page_subtitle", "Everything you need for your Japan journey")}
-          </p>
-        </div>
-      </section> */}
       <PageHero
-        title={t("about.title", "Our Services")}
+        badge="WHAT WE OFFER"
+        title={t("services.page_title", "Our Services")}
         subtitle={t(
-          "about.subtitle",
-          "Everything you need for your Japan journey",
+          "services.page_subtitle",
+          "Everything you need for a successful journey to Japan — under one roof",
         )}
       />
 
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <LoadingSpinner />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div
+              ref={gridRef}
+              className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
+            >
               {services?.map((service, i) => (
                 <div
                   key={service.id}
-                  className="rounded-xl p-7 border hover:shadow-lg transition-all hover:-translate-y-1"
+                  className="group rounded-2xl p-8 border hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden"
                   style={{
                     borderTopWidth: "4px",
                     borderColor:
                       i % 2 === 0
                         ? "var(--color-primary)"
                         : "var(--color-accent)",
+                    background: "#fff",
                   }}
                 >
+                  {/* Hover bg fill */}
                   <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-5"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{
                       background:
                         i % 2 === 0
-                          ? "var(--color-primary)"
-                          : "var(--color-accent)",
+                          ? "rgba(45,62,176,0.02)"
+                          : "rgba(232,150,10,0.02)",
                     }}
-                  >
-                    <span className="text-white">✦</span>
-                  </div>
-                  {service.is_featured && (
-                    <span
-                      className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full mb-3"
-                      style={{ background: "#fff4d6", color: "#854f0b" }}
+                  />
+
+                  <div className="relative z-10">
+                    <div
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm transition-transform duration-300 group-hover:scale-110"
+                      style={{
+                        background:
+                          i % 2 === 0
+                            ? "var(--color-primary)"
+                            : "var(--color-accent)",
+                      }}
                     >
-                      Featured
-                    </span>
-                  )}
-                  <h2
-                    className="font-bold text-xl mb-3"
-                    style={{ color: "var(--color-primary)" }}
-                  >
-                    {tl(service, "title")}
-                  </h2>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "var(--color-secondary)" }}
-                  >
-                    {tl(service, "description")}
-                  </p>
+                      {SERVICE_ICONS[i % SERVICE_ICONS.length]}
+                    </div>
+
+                    {service.is_featured && (
+                      <span
+                        className="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full mb-3"
+                        style={{ background: "#fff4d6", color: "#92400e" }}
+                      >
+                        ⭐ Featured
+                      </span>
+                    )}
+
+                    <h2
+                      className="font-extrabold text-xl mb-3 transition-colors duration-200"
+                      style={{
+                        color: "var(--color-primary)",
+                        letterSpacing: "-0.3px",
+                      }}
+                    >
+                      {tl(service, "title")}
+                    </h2>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: "var(--color-secondary)" }}
+                    >
+                      {tl(service, "description")}
+                    </p>
+
+                    {/* Animated bottom line */}
+                    <div
+                      className="mt-6 h-0.5 w-0 group-hover:w-full rounded-full transition-all duration-500"
+                      style={{
+                        background:
+                          i % 2 === 0
+                            ? "var(--color-primary)"
+                            : "var(--color-accent)",
+                      }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>

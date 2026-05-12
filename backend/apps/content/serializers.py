@@ -37,9 +37,7 @@ class TeamMemberSerializer(serializers.ModelSerializer):
         ]
 
     def get_photo_url(self, obj):
-        if obj.photo:
-            return obj.photo.url
-        return None
+        return obj.photo.url if obj.photo else None
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
@@ -55,9 +53,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
         ]
 
     def get_photo_url(self, obj):
-        if obj.student_photo:
-            return obj.student_photo.url
-        return None
+        return obj.student_photo.url if obj.student_photo else None
 
 
 class NewsEventSerializer(serializers.ModelSerializer):
@@ -76,9 +72,7 @@ class NewsEventSerializer(serializers.ModelSerializer):
         ]
 
     def get_cover_image_url(self, obj):
-        if obj.cover_image:
-            return obj.cover_image.url
-        return None
+        return obj.cover_image.url if obj.cover_image else None
 
 
 class SiteStatSerializer(serializers.ModelSerializer):

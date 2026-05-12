@@ -1,20 +1,46 @@
 import { useSite } from "../../../context/SiteContext";
 import { useLang } from "../../../hooks/useLang";
+import { useScrollAnimation } from "../../../hooks/useScrollAnimation";
 
 export default function StatsBar() {
   const { stats } = useSite();
-  const t = useLang();
-
+  const tl = useLang();
+  const ref = useScrollAnimation();
   if (!stats.length) return null;
 
   return (
-    <section style={{ background: "var(--color-accent)" }} className="py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <section
+      style={{ background: "var(--color-accent)" }}
+      className="py-10 relative overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 0,transparent 50%)",
+          backgroundSize: "60px 100%",
+        }}
+      />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          ref={ref}
+          className="scroll-fade-group grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+        >
           {stats.map((stat) => (
             <div key={stat.id} className="text-white">
-              <div className="text-3xl md:text-4xl font-bold mb-1">{stat.value}</div>
-              <div className="text-sm font-medium opacity-90">{t(stat, "label")}</div>
+              <div
+                className="font-black mb-1"
+                style={{
+                  fontSize: "clamp(28px,3.5vw,46px)",
+                  lineHeight: 1,
+                  letterSpacing: "-1px",
+                }}
+              >
+                {stat.value}
+              </div>
+              <div className="text-sm font-semibold opacity-90 tracking-wide">
+                {tl(stat, "label")}
+              </div>
             </div>
           ))}
         </div>
