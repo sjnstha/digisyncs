@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSite } from "../../context/SiteContext";
 import SectionTitle from "../../components/ui/SectionTitle";
+import PageHero from "../../components/ui/PageHero";
 
 export default function ContactPage() {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export default function ContactPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
-      <section className="py-14" style={{ background: "var(--color-primary)" }}>
+      {/* <section className="py-14" style={{ background: "var(--color-primary)" }}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold text-white mb-4">
             {t("contact.title", "Contact Us")}
@@ -35,7 +36,11 @@ export default function ContactPage() {
             {t("contact.subtitle", "Get a free consultation today")}
           </p>
         </div>
-      </section>
+      </section> */}
+      <PageHero
+        title={t("about.title", "Contact Us")}
+        subtitle={t("about.subtitle", "Get a free consultation today")}
+      />
 
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

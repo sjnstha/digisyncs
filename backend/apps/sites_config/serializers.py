@@ -14,10 +14,11 @@ class NavItemSerializer(serializers.ModelSerializer):
 class SiteConfigSerializer(serializers.ModelSerializer):
     logo_url = serializers.SerializerMethodField()
     favicon_url = serializers.SerializerMethodField()
+    hero_bg_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = SiteConfig
-        exclude = ["id", "country", "logo", "favicon"]
+        exclude = ["id", "country", "logo", "favicon", "hero_bg_image"]
 
     def get_logo_url(self, obj):
         if obj.logo:
@@ -28,6 +29,8 @@ class SiteConfigSerializer(serializers.ModelSerializer):
         if obj.favicon:
             return obj.favicon.url
         return None
+    def get_hero_bg_image_url(self, obj):
+        return obj.hero_bg_image.url if obj.hero_bg_image else None
 
 
 class CountrySerializer(serializers.ModelSerializer):

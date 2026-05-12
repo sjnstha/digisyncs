@@ -55,8 +55,8 @@ class TestimonialSerializer(serializers.ModelSerializer):
         ]
 
     def get_photo_url(self, obj):
-        if obj.photo:
-            return obj.photo.url
+        if obj.student_photo:
+            return obj.student_photo.url
         return None
 
 
@@ -75,9 +75,9 @@ class NewsEventSerializer(serializers.ModelSerializer):
             "published_at", "is_featured",
         ]
 
-    def get_photo_url(self, obj):
-        if obj.photo:
-            return obj.photo.url
+    def get_cover_image_url(self, obj):
+        if obj.cover_image:
+            return obj.cover_image.url
         return None
 
 

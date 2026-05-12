@@ -43,6 +43,7 @@ class SiteConfig(models.Model):
     tagline = models.CharField(max_length=300, blank=True)
     logo = models.ImageField(upload_to="logos/", blank=True, null=True)
     favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
+    hero_bg_image = models.ImageField(upload_to="hero/", blank=True, null=True) 
 
     # ── Colors ────────────────────────────────────────────
     color_primary = models.CharField(max_length=7, default="#0ea5e9",
@@ -93,6 +94,7 @@ class SiteConfig(models.Model):
     sns_line = models.URLField(blank=True, verbose_name="LINE (Japan)")
     sns_linkedin = models.URLField(blank=True)
     sns_tiktok = models.URLField(blank=True)
+    sns_whatsapp = models.CharField(max_length=50, blank=True)
 
     # ── Footer ────────────────────────────────────────────
     footer_text = models.TextField(blank=True)

@@ -16,7 +16,7 @@ class SiteConfigInline(admin.StackedInline):
 
     fieldsets = (
         ("Branding", {
-            "fields": ("site_name", "tagline", "logo", "favicon"),
+            "fields": ("site_name", "tagline", "logo", "favicon", "hero_bg_image"),
         }),
         ("Colors", {
             "fields": (
@@ -43,7 +43,7 @@ class SiteConfigInline(admin.StackedInline):
         ("SNS Links", {
             "fields": (
                 "sns_facebook", "sns_instagram", "sns_twitter",
-                "sns_youtube", "sns_line", "sns_linkedin", "sns_tiktok",
+                "sns_youtube", "sns_line", "sns_linkedin", "sns_tiktok","sns_whatsapp",
             ),
         }),
         ("Footer", {
@@ -80,7 +80,7 @@ class SiteConfigAdmin(admin.ModelAdmin):
             "fields": ("country", "updated_at"),
         }),
         ("Branding", {
-            "fields": ("site_name", "tagline", "logo", "favicon"),
+            "fields": ("site_name", "tagline", "logo", "favicon", "hero_bg_image"),
         }),
         ("Colors", {
             "fields": (
@@ -106,7 +106,7 @@ class SiteConfigAdmin(admin.ModelAdmin):
         ("SNS Links", {
             "fields": (
                 "sns_facebook", "sns_instagram", "sns_twitter",
-                "sns_youtube", "sns_line", "sns_linkedin", "sns_tiktok",
+                "sns_youtube", "sns_line", "sns_linkedin", "sns_tiktok","sns_whatsapp",
             ),
         }),
         ("Footer", {

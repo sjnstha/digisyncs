@@ -7,53 +7,84 @@ export default function Hero() {
   const { t } = useTranslation();
 
   return (
-    <section
-      className="relative overflow-hidden py-20 md:py-32"
-      style={{ background: "linear-gradient(135deg, #1e2d7d 0%, #2d3eb0 60%, #4a5bcf 100%)" }}
-    >
-      {/* Decorative circles */}
-      <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-10"
-        style={{ background: "var(--color-accent)" }} />
-      <div className="absolute -bottom-10 -left-10 w-64 h-64 rounded-full opacity-10"
-        style={{ background: "var(--color-accent)" }} />
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      {/* Background cover image */}
+      {config?.hero_bg_image_url && (
+        <img
+          src={config.hero_bg_image_url}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+      )}
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Tag line badge */}
-        <span
-          className="inline-block text-xs font-semibold px-4 py-1 rounded-full mb-6 tracking-wide"
-          style={{ background: "var(--color-accent)", color: "#fff" }}
-        >
-          {t("home.hero.badge", "We Connect You to the World.")}
-        </span>
+      {/* Dark blue overlay on top of image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            // "linear-gradient(135deg, rgba(30,45,125,0.92) 0%, rgba(45,62,176,0.85) 60%, rgba(74,91,207,0.7) 100%)",
+            "linear-gradient(135deg, rgba(18, 28, 85, 0.68) 0%, rgba(32, 48, 140, 0.52) 45%, rgba(74, 91, 207, 0.32) 100%)",
+        }}
+      />
 
-        <h1
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
-          style={{ fontFamily: "var(--font-site)" }}
-        >
-          {config?.site_name || t("home.hero.title")}
-        </h1>
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-24">
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <span
+            className="inline-block text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-widest border"
+            style={{
+              color: "var(--color-accent)",
+              borderColor: "var(--color-accent)",
+              background: "rgba(232,150,10,0.1)",
+            }}
+          >
+            {t("hero.badge", "GLOBAL ACADEMIC PARTNERS")}
+          </span>
 
-        {config?.tagline && (
-          <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            {config.tagline}
+          {/* Heading */}
+          <h1
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight"
+            style={{ fontFamily: "var(--font-site)" }}
+          >
+            {t("hero.title_line1", "Your Professional")}
+            <br />
+            {t("hero.title_line2", "Bridge to")}{" "}
+            <span style={{ color: "var(--color-accent)" }}>
+              {t("hero.title_highlight", "Japan")}
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-base md:text-lg text-blue-100 mb-10 leading-relaxed max-w-xl">
+            {config?.tagline ||
+              t(
+                "hero.subtitle",
+                '"We Connect You to the World." Expert consultancy for students and professionals.',
+              )}
           </p>
-        )}
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/contact"
-            className="inline-block px-8 py-3 rounded-lg font-semibold text-white transition-transform hover:scale-105"
-            style={{ background: "var(--color-accent)" }}
-          >
-            {t("home.hero.cta_primary", "Get Free Consultation")}
-          </Link>
-          <Link
-            to="/services"
-            className="inline-block px-8 py-3 rounded-lg font-semibold transition-transform hover:scale-105"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
-          >
-            {t("home.hero.cta_secondary", "Our Services")}
-          </Link>
+          {/* CTA buttons */}
+          <div className="flex flex-wrap gap-4">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold text-white transition-all hover:scale-105 hover:brightness-110"
+              style={{ background: "var(--color-accent)" }}
+            >
+              {t("hero.cta_primary", "Apply Now")} →
+            </Link>
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-white transition-all hover:scale-105"
+              style={{
+                border: "1.5px solid rgba(255,255,255,0.5)",
+                background: "rgba(255,255,255,0.08)",
+              }}
+            >
+              {t("hero.cta_secondary", "View Programs")}
+            </Link>
+          </div>
         </div>
       </div>
     </section>
