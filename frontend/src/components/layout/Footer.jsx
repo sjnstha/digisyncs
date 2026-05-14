@@ -1,51 +1,83 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MapPin, Phone, Mail } from "lucide-react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaXTwitter,
+  FaYoutube,
+  FaLine,
+  FaLinkedinIn,
+  FaTiktok,
+  FaWhatsapp,
+} from "react-icons/fa6";
 import { useSite } from "../../context/SiteContext";
+import { useLang } from "../../hooks/useLang";
 
-// SVG path data for each social platform
 const SNS_ICONS = {
   sns_facebook: {
-    path: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
+    icon: FaFacebookF,
     label: "Facebook",
+    bg: "#1877F2",
   },
+
   sns_instagram: {
-    path: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01M6.5 19.5h11a3 3 0 003-3v-11a3 3 0 00-3-3h-11a3 3 0 00-3 3v11a3 3 0 003 3z",
+    icon: FaInstagram,
     label: "Instagram",
+    bg: "linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4)",
   },
+
   sns_twitter: {
-    path: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
+    icon: FaXTwitter,
     label: "X / Twitter",
+    bg: "#000000",
   },
+
   sns_youtube: {
-    path: "M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V9l5.75 3-5.75 3.02z",
+    icon: FaYoutube,
     label: "YouTube",
+    bg: "#FF0000",
   },
+
   sns_line: {
-    path: "M12 2C6.48 2 2 6.02 2 11c0 4.17 2.85 7.68 6.84 8.71l.56.15v2.86l3.42-1.91c.36.05.73.08 1.18.08 5.52 0 10-4.02 10-9C22 6.02 17.52 2 12 2z",
+    icon: FaLine,
     label: "LINE",
+    bg: "#06C755",
   },
+
   sns_linkedin: {
-    path: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 100-4 2 2 0 000 4z",
+    icon: FaLinkedinIn,
     label: "LinkedIn",
+    bg: "#0A66C2",
   },
+
   sns_tiktok: {
-    path: "M16 2h3a5 5 0 005 5v3a8 8 0 01-8-8v11a5 5 0 11-5-5",
+    icon: FaTiktok,
     label: "TikTok",
+    bg: "#111111",
   },
+
   sns_whatsapp: {
-    path: "M20.52 3.48A11.82 11.82 0 0012.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.15 1.6 5.96L0 24l6.33-1.66a11.84 11.84 0 005.74 1.47c6.57 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.47-8.42z",
+    icon: FaWhatsapp,
     label: "WhatsApp",
+    bg: "#25D366",
     link: (number) => `https://wa.me/${number.replace(/\D/g, "")}`,
   },
 };
 
 export default function Footer() {
   const { config, nav } = useSite();
-  const { i18n } = useTranslation();
-  const lang = i18n.language?.slice(0, 2) || "en";
+  const tl = useLang();
+  const { t, i18n } = useTranslation();
+  const lang =
+    i18n.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
 
   const getLabel = (item) => item[`label_${lang}`] || item.label_en;
+
+  const findKeyObj = (key) =>
+    nav.find((item) => {
+      return item.label_en === key;
+    });
 
   // Only show SNS icons where the URL is actually set in DB
   const activeSns = Object.entries(SNS_ICONS)
@@ -101,7 +133,7 @@ export default function Footer() {
             {config?.logo_url ? (
               <img
                 src={config.logo_url}
-                alt={config.site_name}
+                alt={tl(config, "site_name") || ""}
                 className="h-16 mb-5 object-contain"
               />
             ) : (
@@ -109,50 +141,36 @@ export default function Footer() {
                 className="text-2xl font-extrabold mb-4"
                 style={{ color: "var(--color-accent)" }}
               >
-                {config?.site_name}
+                {tl(config, "site_name")}
               </h2>
             )}
 
             {config?.tagline && (
               <p className="text-slate-300 text-sm leading-relaxed mb-6 max-w-xs">
-                {config.tagline}
+                {tl(config, "tagline")}
               </p>
             )}
 
             {/* SNS icons — only shown when URLs are set in DB */}
-            {activeSns.length > 0 && (
-              <div className="flex flex-wrap gap-2.5">
-                {activeSns.map(({ url, path, label }) => (
-                  <a
-                    key={label}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    title={label}
-                    className="p-2.5 rounded-xl transition-all duration-200 hover:scale-110 hover:brightness-125"
-                    style={{
-                      background: "rgba(255,255,255,0.08)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }}
-                  >
-                    <svg
-                      className="w-4 h-4 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.8}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d={path}
-                      />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            )}
+            <div className="flex items-center gap-3 flex-wrap">
+              {activeSns.map(({ url, icon: Icon, label, bg }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110 hover:brightness-110 shadow-md flex-shrink-0"
+                  style={{
+                    background: bg,
+                    color: "#fff",
+                  }}
+                >
+                  <Icon size={20} />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Column 2 — Quick links */}
@@ -162,7 +180,7 @@ export default function Footer() {
                 className="w-4 h-0.5 rounded-full inline-block"
                 style={{ background: "var(--color-accent)" }}
               />
-              Quick Links
+              {t("footer.title.quicklink")}
             </h3>
             <ul className="space-y-3">
               {nav.map((item) => (
@@ -189,7 +207,7 @@ export default function Footer() {
                 className="w-4 h-0.5 rounded-full inline-block"
                 style={{ background: "var(--color-accent)" }}
               />
-              Contact
+              {tl(findKeyObj("Contact") || {}, "label")}
             </h3>
             <ul className="space-y-4 text-sm text-slate-300">
               {config?.address_line1 && (
@@ -199,17 +217,17 @@ export default function Footer() {
                     style={{ color: "var(--color-accent)" }}
                   />
                   <span>
-                    {config.address_line1}
+                    {tl(config, "address_line1")}
                     {config.address_line2 && (
                       <>
                         <br />
-                        {config.address_line2}
+                        {tl(config, "address_line2")}
                       </>
                     )}
                     {config.city && (
                       <>
                         <br />
-                        {config.city} {config.postal_code}
+                        {tl(config, "city")} {tl(config, "postal_code")}
                       </>
                     )}
                   </span>
@@ -258,11 +276,9 @@ export default function Footer() {
         >
           <div>
             <h3 className="text-xl font-bold text-white mb-1">
-              Ready to Study in Japan?
+              {t("footer.cta.title")}
             </h3>
-            <p className="text-slate-300 text-sm">
-              Start your journey with a free professional consultation today.
-            </p>
+            <p className="text-slate-300 text-sm">{t("footer.cta.subtitle")}</p>
           </div>
           {/* ✅ Fixed: was /#contact — now /contact */}
           <Link
@@ -273,7 +289,7 @@ export default function Footer() {
               boxShadow: "0 4px 16px rgba(232,150,10,0.4)",
             }}
           >
-            Apply Now →
+            {t("footer.cta.apply")} →
           </Link>
         </div>
       </div>
@@ -282,19 +298,22 @@ export default function Footer() {
       <div className="relative z-10 border-t border-white/10">
         <div className="max-w-[1400px] mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <p>
-            {config?.copyright_text ||
-              `© ${new Date().getFullYear()} ${config?.site_name}. All rights reserved.`}
+            {tl(config, "copyright_text") ||
+              `© ${new Date().getFullYear()} ${tl(config, "site_name")}. All rights reserved.`}
           </p>
           <div className="flex gap-5">
-            <Link to="/contact" className="hover:text-white transition-colors">
-              Contact
-            </Link>
-            <Link to="/news" className="hover:text-white transition-colors">
-              News
-            </Link>
-            <Link to="/about" className="hover:text-white transition-colors">
-              About
-            </Link>
+            {nav.map((item) => {
+              return (
+                <Link
+                  key={item.id}
+                  to={item.url}
+                  target={item.open_in_new_tab ? "_blank" : undefined}
+                  className="hover:text-white transition-colors"
+                >
+                  {getLabel(item)}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

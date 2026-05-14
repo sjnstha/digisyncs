@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchSiteData, fetchStats } from "../api/siteApi";
+import { fetchSiteData, fetchStats, fetchTranslations } from "../api/siteApi";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const SiteContext = createContext(null);
 
@@ -17,25 +18,67 @@ export function SiteProvider({ children }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    Promise.all([fetchSiteData(countryCode), fetchStats(countryCode)])
-      .then(([site, statsData]) => {
+    const loadSite = async () => {
+      try {
+        setLoading(true);
+        const site = await fetchSiteData(countryCode);
+        const statsData = await fetchStats(countryCode);
         setSiteData(site);
         setStats(statsData);
         applyTheme(site.config);
-        // Sync language with country default if no user preference saved
+        // Set default language once
         if (!localStorage.getItem("i18nextLng")) {
-          i18n.changeLanguage(site.country.default_language);
+          const defaultLang = site.country.default_language || "en";
+          localStorage.setItem("i18nextLng", defaultLang);
+          await i18n.changeLanguage(defaultLang);
         }
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadSite();
   }, [countryCode]);
+
+  useEffect(() => {
+    const loadTranslationsData = async () => {
+      try {
+        const language = i18n.language || "en";
+        const translationData = await fetchTranslations(language, countryCode);
+        const translations = translationData.translations || {};
+        // Remove old bundle
+        if (i18n.hasResourceBundle(language, "translation")) {
+          i18n.removeResourceBundle(language, "translation");
+        }
+        // Add translations
+        i18n.addResourceBundle(
+          language,
+          "translation",
+          translations,
+          true,
+          true,
+        );
+        // Reload resources
+        await i18n.reloadResources();
+        // Persist
+        localStorage.setItem("i18nextLng", language);
+        document.documentElement.lang = language;
+      } catch (e) {
+        console.error("Translation load failed", e);
+      }
+    };
+    loadTranslationsData();
+  }, [i18n.language, countryCode]);
 
   const switchCountry = (code) => {
     localStorage.setItem("country", code);
     setCountryCode(code);
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <SiteContext.Provider

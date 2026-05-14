@@ -48,7 +48,7 @@ export default function TeamPreview() {
     >
       {/* Subtle grid bg */}
       <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        className="absolute inset-0 opacity-[0] pointer-events-none"
         style={{
           backgroundImage:
             "linear-gradient(var(--color-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary) 1px, transparent 1px)",
@@ -59,9 +59,9 @@ export default function TeamPreview() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={titleRef} className="scroll-fade">
           <SectionTitle
-            title={t("team.section_title", "Meet Our Team")}
+            title={t("home.team.section_title", "Meet Our Team")}
             subtitle={t(
-              "team.section_subtitle",
+              "home.team.section_subtitle",
               "The experts behind your success story",
             )}
           />
@@ -90,13 +90,13 @@ export default function TeamPreview() {
                   }}
                 />
 
-                <Avatar name={member.name} photoUrl={member.photo_url} />
+                <Avatar name={tl(member, "name")} photoUrl={member.photo_url} />
 
                 <h3
                   className="font-bold text-lg mb-1"
                   style={{ color: "var(--color-primary)" }}
                 >
-                  {member.name}
+                  {tl(member, "name")}
                 </h3>
                 <p
                   className="text-sm font-semibold mb-4 inline-block px-3 py-0.5 rounded-full"

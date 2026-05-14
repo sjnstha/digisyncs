@@ -7,11 +7,12 @@ import { useTranslation } from "react-i18next";
  */
 export function useLang() {
   const { i18n } = useTranslation();
-  const lang = i18n.language?.slice(0, 2) || "en";
+  const lang =
+    i18n.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
 
   return (obj, field) => {
     if (!obj) return "";
-    const localized = obj[`${field}_${lang}`];
-    return localized || obj[`${field}_en`] || "";
+    const localized = obj[`${field}_${lang}`] || obj[field];
+    return localized || obj[`${field}_en`] || obj[`${field}`] || "";
   };
 }

@@ -30,9 +30,9 @@ export default function TestimonialsSection() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={titleRef} className="scroll-fade">
           <SectionTitle
-            title={t("testimonials.section_title", "Student Stories")}
+            title={t("home.testimonials.section_title", "Student Stories")}
             subtitle={t(
-              "testimonials.section_subtitle",
+              "home.testimonials.section_subtitle",
               "Real results from real students — their words, not ours",
             )}
           />

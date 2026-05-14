@@ -31,9 +31,9 @@ export default function ServicesPreview() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={titleRef} className="scroll-fade">
           <SectionTitle
-            title={t("services.section_title", "Our Services")}
+            title={t("home.service.section_title", "Our Services")}
             subtitle={t(
-              "services.section_subtitle",
+              "home.service.section_subtitle",
               "Comprehensive support for every step of your Japan journey",
             )}
           />
@@ -50,7 +50,7 @@ export default function ServicesPreview() {
               <div
                 key={service.id}
                 className="group bg-white rounded-2xl p-7 shadow-sm border border-gray-100
-                           hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-default"
+                          hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-default"
               >
                 {/* Icon */}
                 <div
@@ -71,7 +71,7 @@ export default function ServicesPreview() {
                     className="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full mb-3"
                     style={{ background: "#fff4d6", color: "#92400e" }}
                   >
-                    Featured
+                    {t("home.service.featured")}
                   </span>
                 )}
 
@@ -110,7 +110,7 @@ export default function ServicesPreview() {
               boxShadow: "0 6px 20px rgba(45,62,176,0.3)",
             }}
           >
-            {t("services.view_all", "View All Services")} →
+            {t("home.service.view_all", "View All Services")} →
           </Link>
         </div>
       </div>

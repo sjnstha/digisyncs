@@ -1,32 +1,16 @@
 import { useTranslation } from "react-i18next";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSite } from "../../../context/SiteContext";
+import { useLang } from "../../../hooks/useLang";
 import { useScrollAnimation } from "../../../hooks/useScrollAnimation";
 import SectionTitle from "../../../components/ui/SectionTitle";
-
-const CONTACT_ITEMS = [
-  { emoji: "📍", key: "address" },
-  { emoji: "📞", key: "phone" },
-  { emoji: "✉️", key: "email" },
-];
 
 export default function ContactSection() {
   const { config } = useSite();
   const { t } = useTranslation();
+  const tl = useLang();
   const ref = useScrollAnimation();
-
-  const values = {
-    address: [config?.address_line1, config?.address_line2, config?.city]
-      .filter(Boolean)
-      .join(", "),
-    phone: config?.phone,
-    email: config?.email,
-  };
-  const hrefs = {
-    phone: `tel:${config?.phone}`,
-    email: `mailto:${config?.email}`,
-  };
-
   return (
     <section
       className="py-20 md:py-28 relative overflow-hidden"
@@ -40,9 +24,9 @@ export default function ContactSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle
-          title={t("contact.section_title", "Find Us")}
+          title={t("home.contact.section_title", "Find Us")}
           subtitle={t(
-            "contact.section_subtitle",
+            "home.contact.section_subtitle",
             "Visit our office or reach out — we respond within 24 hours",
           )}
         />
@@ -54,45 +38,113 @@ export default function ContactSection() {
           {/* Left — contact info + CTA */}
           <div>
             <div className="space-y-5 mb-8">
-              {CONTACT_ITEMS.filter(({ key }) => values[key]).map(
-                ({ emoji, key }) => (
-                  <div key={key} className="flex items-start gap-4">
+              <ul className="space-y-5">
+                {config?.address_line1 && (
+                  <li className="flex items-start gap-4">
                     <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                      className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{
                         background: "var(--color-primary)",
                         color: "#fff",
                       }}
                     >
-                      {emoji}
+                      <MapPin className="w-5 h-5" />
                     </div>
+
                     <div>
                       <p
-                        className="text-xs font-bold uppercase tracking-widest mb-0.5"
+                        className="text-xs font-bold uppercase tracking-widest mb-1"
                         style={{ color: "var(--color-accent)" }}
                       >
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        {t("home.contact.address")}
                       </p>
-                      {hrefs[key] ? (
-                        <a
-                          href={hrefs[key]}
-                          className="text-sm font-medium hover:underline"
-                          style={{ color: "var(--color-primary)" }}
-                        >
-                          {values[key]}
-                        </a>
-                      ) : (
-                        <p
-                          className="text-sm font-medium"
-                          style={{ color: "var(--color-primary)" }}
-                        >
-                          {values[key]}
-                        </p>
-                      )}
+
+                      <p
+                        className="text-sm font-medium leading-relaxed"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        {tl(config, "address_line1")}
+
+                        {config.address_line2 && (
+                          <>
+                            <br />
+                            {tl(config, "address_line2")}
+                          </>
+                        )}
+
+                        {config.city && (
+                          <>
+                            <br />
+                            {tl(config, "city")} {tl(config, "postal_code")}
+                          </>
+                        )}
+                      </p>
                     </div>
-                  </div>
-                ),
-              )}
+                  </li>
+                )}
+
+                {config?.phone && (
+                  <li className="flex items-start gap-4">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: "var(--color-primary)",
+                        color: "#fff",
+                      }}
+                    >
+                      <Phone className="w-5 h-5" />
+                    </div>
+
+                    <div>
+                      <p
+                        className="text-xs font-bold uppercase tracking-widest mb-1"
+                        style={{ color: "var(--color-accent)" }}
+                      >
+                        {t("home.contact.phone")}
+                      </p>
+
+                      <a
+                        href={`tel:${config.phone}`}
+                        className="text-sm font-medium hover:underline"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        {config.phone}
+                      </a>
+                    </div>
+                  </li>
+                )}
+
+                {config?.email && (
+                  <li className="flex items-start gap-4">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: "var(--color-primary)",
+                        color: "#fff",
+                      }}
+                    >
+                      <Mail className="w-5 h-5" />
+                    </div>
+
+                    <div>
+                      <p
+                        className="text-xs font-bold uppercase tracking-widest mb-1"
+                        style={{ color: "var(--color-accent)" }}
+                      >
+                        {t("home.contact.email")}
+                      </p>
+
+                      <a
+                        href={`mailto:${config.email}`}
+                        className="text-sm font-medium hover:underline break-all"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        {config.email}
+                      </a>
+                    </div>
+                  </li>
+                )}
+              </ul>
             </div>
 
             <Link
@@ -103,7 +155,7 @@ export default function ContactSection() {
                 boxShadow: "0 6px 20px rgba(232,150,10,0.35)",
               }}
             >
-              {t("contact.cta", "Get Free Consultation")} →
+              {t("home.contact.cta", "Get Free Consultation")} →
             </Link>
           </div>
 

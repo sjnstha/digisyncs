@@ -17,10 +17,11 @@ class LanguageCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LanguageCourse
         fields = [
-            "id", "language", "level", "level_code",
+            "id", "language", "level", "level_ja", "level_np", "level_code",
             "title_en", "title_ja", "title_ne",
             "description_en", "description_ja", "description_ne",
-            "duration_weeks", "schedule", "price", "currency", "order",
+            "duration_weeks", "schedule", "schedule_ja", "schedule_ne",
+            "price", "price_ja", "price_ne", "currency", "order",
         ]
 
 
@@ -30,7 +31,7 @@ class TeamMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
         fields = [
-            "id", "name",
+            "id", "name", "name_ja", "name_ne",
             "role_en", "role_ja", "role_ne",
             "bio_en", "bio_ja", "bio_ne",
             "photo_url", "email", "linkedin", "order",
@@ -46,10 +47,11 @@ class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
         fields = [
-            "id", "student_name", "photo_url",
-            "origin_country", "destination", "rating",
+            "id", "student_name", "student_name_ja", "student_name_ne", "photo_url",
+            "origin_country", "origin_country_ja", "origin_country_ne",
+            "destination", "destination_ja", "destination_ne", "rating",
             "quote_en", "quote_ja", "quote_ne",
-            "service_used", "is_featured",
+            "service_used", "service_used_ja", "service_used_ne", "is_featured",
         ]
 
     def get_photo_url(self, obj):
@@ -62,12 +64,12 @@ class NewsEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsEvent
         fields = [
-            "id", "type", "slug",
+            "id", "type", "type_ja", "type_np", "slug",
             "title_en", "title_ja", "title_ne",
             "excerpt_en", "excerpt_ja", "excerpt_ne",
             "body_en", "body_ja", "body_ne",
             "cover_image_url",
-            "event_date", "event_location",
+            "event_date", "event_location", "event_location_ja", "event_location_ne",
             "published_at", "is_featured",
         ]
 
@@ -78,4 +80,4 @@ class NewsEventSerializer(serializers.ModelSerializer):
 class SiteStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteStat
-        fields = ["id", "value", "label_en", "label_ja", "label_ne", "icon", "order"]
+        fields = ["id", "value", "value_ja", "value_ne", "label_en", "label_ja", "label_ne", "icon", "order"]

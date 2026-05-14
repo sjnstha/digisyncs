@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSite } from "../../../context/SiteContext";
+import { useLang } from "../../../hooks/useLang";
 
 /* Floating decorative blob */
 function Blob({ style }) {
@@ -19,8 +20,13 @@ function Blob({ style }) {
 }
 
 export default function Hero() {
-  const { config } = useSite();
+  const { config, stats } = useSite();
   const { t } = useTranslation();
+
+  const lang =
+    t.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
+
+  const tl = useLang();
   const imgRef = useRef(null);
 
   /* Subtle Ken Burns zoom on the background image */
@@ -110,27 +116,54 @@ export default function Hero() {
           </div>
 
           {/* Headline */}
-          <h1
-            className="text-white font-extrabold mb-6 leading-none"
-            style={{
-              fontSize: "clamp(42px, 5.5vw, 76px)",
-              letterSpacing: "-1.5px",
-              lineHeight: 1.05,
-              fontFamily: "var(--font-site)",
-            }}
-          >
-            {t("hero.title_line1", "Your Professional")}
-            <br />
-            {t("hero.title_line2", "Bridge to")}{" "}
-            <span
+          {lang && lang === "en" && (
+            <h1
+              className="text-white font-extrabold mb-6 leading-none"
               style={{
-                color: "var(--color-accent)",
-                textShadow: "0 0 40px rgba(232,150,10,0.4)",
+                fontSize: "clamp(42px, 5.5vw, 76px)",
+                letterSpacing: "-1.5px",
+                lineHeight: 1.05,
+                fontFamily: "var(--font-site)",
               }}
             >
-              {t("hero.title_highlight", "Japan")}
-            </span>
-          </h1>
+              {t("hero.title_line1", "Your Professional")}
+              <br />
+              {t("hero.title_line2", "Bridge to")}{" "}
+              <span
+                style={{
+                  color: "var(--color-accent)",
+                  textShadow: "0 0 40px rgba(232,150,10,0.4)",
+                }}
+              >
+                {t("hero.title_highlight", "Japan")}
+              </span>
+            </h1>
+          )}
+
+          {lang && (lang === "ja" || lang === "ne") && (
+            <h1
+              className="text-white font-extrabold mb-6 leading-none"
+              style={{
+                fontSize: "clamp(42px, 5.5vw, 76px)",
+                letterSpacing: "-1.5px",
+                lineHeight: 1.05,
+                fontFamily: "var(--font-site)",
+              }}
+            >
+              <span
+                style={{
+                  color: "var(--color-accent)",
+                  textShadow: "0 0 40px rgba(232,150,10,0.4)",
+                }}
+              >
+                {t("hero.title_line1", "Japan")}
+              </span>
+              <br />
+              {t("hero.title_line2")}
+              <br />
+              {t("hero.title_highlight")}
+            </h1>
+          )}
 
           {/* Sub-headline */}
           <p
@@ -141,11 +174,10 @@ export default function Hero() {
               opacity: 0.9,
             }}
           >
-            {config?.tagline ||
-              t(
-                "hero.subtitle",
-                '"We Connect You to the World." Expert consultancy for students and professionals looking to build a career in the land of the rising sun.',
-              )}
+            {t(
+              "hero.subtitle",
+              '"We Connect You to the World." Expert consultancy for students and professionals looking to build a career in the land of the rising sun.',
+            )}
           </p>
 
           {/* CTA buttons */}
@@ -211,8 +243,10 @@ export default function Hero() {
               ))}
             </div>
             <div className="text-xs text-blue-100">
-              <span className="font-bold text-white">500+</span> students placed
-              in Japan this year
+              <span className="font-bold text-white">
+                {stats && stats.length > 0 && tl(stats[0], "value")}
+              </span>{" "}
+              {t("hero.social.proof")}
             </div>
           </div>
         </div>

@@ -65,13 +65,13 @@ class NewsEventAdmin(admin.ModelAdmin):
             "classes": ("collapse",),
         }),
         ("Media & Event details", {
-            "fields": ("cover_image", "event_date", "event_location"),
+            "fields": ("cover_image", "event_date", "event_location", "event_location_ja", "event_location_ne"),
         }),
     )
 
 
 @admin.register(SiteStat)
 class SiteStatAdmin(admin.ModelAdmin):
-    list_display = ["value", "label_en", "country", "icon", "order", "is_active"]
+    list_display = ["value", "value_ja", "value_ne", "label_en", "country", "icon", "order", "is_active"]
     list_editable = ["order", "is_active"]
     list_filter = ["country", "is_active"]

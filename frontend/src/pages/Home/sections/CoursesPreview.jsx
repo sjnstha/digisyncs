@@ -8,30 +8,67 @@ import SectionTitle from "../../../components/ui/SectionTitle";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 
 const LEVEL_META = {
-  N5: { bg: "#f0fdf4", border: "#22c55e", badge: "#22c55e", label: "Beginner" },
+  N5: {
+    bg: "#f0fdf4",
+    border: "#22c55e",
+    badge: "#22c55e",
+    label: {
+      en: "Beginner",
+      ja: "初級",
+      ne: "शुरुआती स्तर",
+    },
+  },
   N4: {
     bg: "#eff6ff",
     border: "#3b82f6",
     badge: "#3b82f6",
     label: "Elementary",
+    label: {
+      en: "Elementary",
+      ja: "初級後半",
+      ne: "आधारभूत स्तर",
+    },
   },
   N3: {
     bg: "#fffbeb",
     border: "#f59e0b",
     badge: "#f59e0b",
     label: "Intermediate",
+    label: {
+      en: "Intermediate",
+      ja: "中級",
+      ne: "मध्यम स्तर",
+    },
   },
   N2: {
     bg: "#fef2f2",
     border: "#ef4444",
     badge: "#ef4444",
     label: "Upper Int.",
+    label: {
+      en: "Upper Intermediate",
+      ja: "上級",
+      ne: "उन्नत स्तर",
+    },
   },
-  N1: { bg: "#f5f3ff", border: "#8b5cf6", badge: "#8b5cf6", label: "Advanced" },
+  N1: {
+    bg: "#f5f3ff",
+    border: "#8b5cf6",
+    badge: "#8b5cf6",
+    label: "Advanced",
+    label: {
+      en: "Advanced",
+      ja: "最上級",
+      ne: "विशेषज्ञ स्तर",
+    },
+  },
 };
 
 export default function CoursesPreview() {
   const { t } = useTranslation();
+  const lang =
+    t.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
+
   const { data: courses, loading } = useContent(fetchCourses);
   const tl = useLang();
   const titleRef = useScrollAnimation();
@@ -42,9 +79,9 @@ export default function CoursesPreview() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={titleRef} className="scroll-fade">
           <SectionTitle
-            title={t("courses.section_title", "Language Courses")}
+            title={t("home.courses.section_title", "Language Courses")}
             subtitle={t(
-              "courses.section_subtitle",
+              "home.courses.section_subtitle",
               "JLPT-aligned Japanese courses from N5 to N1",
             )}
           />
@@ -55,7 +92,7 @@ export default function CoursesPreview() {
         ) : (
           <div
             ref={gridRef}
-            className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
+            className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
           >
             {courses?.map((course) => {
               const meta = LEVEL_META[course.level_code] || {
@@ -83,10 +120,11 @@ export default function CoursesPreview() {
                       {course.level_code}
                     </span>
                     <span
-                      className="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
+                      // className="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
+                      className="inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full text-white whitespace-nowrap"
                       style={{ background: meta.badge }}
                     >
-                      {meta.label}
+                      {meta.label[lang]}
                     </span>
                   </div>
 
@@ -108,7 +146,7 @@ export default function CoursesPreview() {
                     )}
                     {course.schedule && (
                       <div className="flex items-center gap-1.5">
-                        <span>📅</span> {course.schedule}
+                        <span>📅</span> {tl(course, "schedule")}
                       </div>
                     )}
                     {course.price && (
@@ -116,7 +154,25 @@ export default function CoursesPreview() {
                         className="font-bold text-sm mt-2"
                         style={{ color: meta.badge }}
                       >
-                        ¥{Number(course.price).toLocaleString()}
+                        {lang === "en" && (
+                          <>Rs.{Number(course.price).toLocaleString()}</>
+                        )}
+
+                        {lang === "jp" && (
+                          <>
+                            ¥
+                            {course.price_ja ||
+                              Number(course.price_ja).toLocaleString()}
+                          </>
+                        )}
+
+                        {lang === "ne" && (
+                          <>
+                            Rs.
+                            {course.price_ne ||
+                              Number(course.price_ne).toLocaleString()}
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -135,7 +191,7 @@ export default function CoursesPreview() {
               boxShadow: "0 6px 20px rgba(232,150,10,0.35)",
             }}
           >
-            {t("courses.view_all", "View All Courses")} →
+            {t("courses.view_all")} →
           </Link>
         </div>
       </div>

@@ -23,10 +23,10 @@ class Command(BaseCommand):
 
     def _seed_stats(self, country):
         stats = [
-            {"value": "500+", "label_en": "Students Placed",  "label_ja": "留学生",      "icon": "users",          "order": 1},
-            {"value": "10+",  "label_en": "Years Experience", "label_ja": "経験年数",     "icon": "calendar",       "order": 2},
-            {"value": "50+",  "label_en": "Partner Schools",  "label_ja": "提携校",       "icon": "building",       "order": 3},
-            {"value": "98%",  "label_en": "Visa Success Rate","label_ja": "ビザ成功率",   "icon": "certificate",    "order": 4},
+            {"value": "500+", "value_ja": "500+", "value_ne": "५००+","label_en": "Students Placed",  "label_ja": "留学生",      "icon": "users",          "order": 1},
+            {"value": "10+",  "value_ja": "500+", "value_ne": "१०+","label_en": "Years Experience", "label_ja": "経験年数",     "icon": "calendar",       "order": 2},
+            {"value": "50+",  "value_ja": "50+", "value_ne": "५०+","label_en": "Partner Schools",  "label_ja": "提携校",       "icon": "building",       "order": 3},
+            {"value": "98%",  "value_ja": "98%", "value_ne": "९८%","label_en": "Visa Success Rate","label_ja": "ビザ成功率",   "icon": "certificate",    "order": 4},
         ]
         for s in stats:
             SiteStat.objects.get_or_create(country=country, label_en=s["label_en"], defaults=s)
@@ -101,11 +101,11 @@ class Command(BaseCommand):
 
     def _seed_courses(self, country):
         courses = [
-            {"language": "Japanese", "level": "beginner",      "level_code": "N5", "title_en": "Japanese N5 — Beginner",      "title_ja": "日本語N5 入門",   "duration_weeks": 12, "schedule": "Mon–Fri 9:00–12:00", "price": 80000,  "currency": "JPY", "order": 1},
-            {"language": "Japanese", "level": "elementary",    "level_code": "N4", "title_en": "Japanese N4 — Elementary",    "title_ja": "日本語N4 初級",   "duration_weeks": 16, "schedule": "Mon–Fri 9:00–12:00", "price": 90000,  "currency": "JPY", "order": 2},
-            {"language": "Japanese", "level": "intermediate",  "level_code": "N3", "title_en": "Japanese N3 — Intermediate",  "title_ja": "日本語N3 中級",   "duration_weeks": 20, "schedule": "Mon–Fri 9:00–13:00", "price": 100000, "currency": "JPY", "order": 3},
-            {"language": "Japanese", "level": "upper_intermediate", "level_code": "N2", "title_en": "Japanese N2 — Upper Intermediate", "title_ja": "日本語N2 上級", "duration_weeks": 24, "schedule": "Mon–Fri 9:00–13:00", "price": 110000, "currency": "JPY", "order": 4},
-            {"language": "Japanese", "level": "advanced",      "level_code": "N1", "title_en": "Japanese N1 — Advanced",      "title_ja": "日本語N1 最上級", "duration_weeks": 28, "schedule": "Mon–Sat 9:00–14:00", "price": 130000, "currency": "JPY", "order": 5},
+            {"language": "Japanese", "level": "beginner",      "level_code": "N5", "title_en": "Japanese N5 — Beginner",      "title_ja": "日本語N5 入門",   "duration_weeks": 12, "schedule": "Mon–Fri 9:00–12:00", "schedule_ja": "月〜金 9:00〜12:00", "schedule_ne": "सोम–शुक्र बिहान ९:०० – दिउँसो १२:००", "price": 80000,  "price_ja": "", "price_ne": "८०,०००", "currency": "JPY", "order": 1},
+            {"language": "Japanese", "level": "elementary",    "level_code": "N4", "title_en": "Japanese N4 — Elementary",    "title_ja": "日本語N4 初級",   "duration_weeks": 16, "schedule": "Mon–Fri 9:00–12:00", "schedule_ja": "月〜金 9:00〜12:00", "schedule_ne": "सोम–शुक्र बिहान ९:०० – दिउँसो १२:००", "price": 90000,  "price_ja": "", "price_ne": "९०,०००", "currency": "JPY", "order": 2},
+            {"language": "Japanese", "level": "intermediate",  "level_code": "N3", "title_en": "Japanese N3 — Intermediate",  "title_ja": "日本語N3 中級",   "duration_weeks": 20, "schedule": "Mon–Fri 9:00–13:00", "schedule_ja": "月〜金 9:00〜13:00", "schedule_ne": "सोम–शुक्र बिहान ९:०० – दिउँसो १:००", "price": 100000, "price_ja": "", "price_ne": "१,००,०००", "currency": "JPY", "order": 3},
+            {"language": "Japanese", "level": "upper_intermediate", "level_code": "N2", "title_en": "Japanese N2 — Upper Intermediate", "title_ja": "日本語N2 上級", "duration_weeks": 24, "schedule": "Mon–Fri 9:00–13:00", "schedule_ja": "月〜金 9:00〜13:00", "schedule_ne": "सोम–शुक्र बिहान ९:०० – दिउँसो १:००", "price": 110000, "price_ja": "", "price_ne": "१,१०,०००", "currency": "JPY", "order": 4},
+            {"language": "Japanese", "level": "advanced",      "level_code": "N1", "title_en": "Japanese N1 — Advanced",      "title_ja": "日本語N1 最上級", "duration_weeks": 28, "schedule": "Mon–Sat 9:00–14:00", "schedule_ja": "月〜金 9:00〜14:00", "schedule_ne": "सोम–शुक्र बिहान ९:०० – दिउँसो १:००", "price": 130000, "price_ja": "", "price_ne": "१,३०,०००", "currency": "JPY", "order": 5},
         ]
         for c in courses:
             LanguageCourse.objects.get_or_create(country=country, level_code=c["level_code"], defaults={**c, "is_active": True})
@@ -115,6 +115,8 @@ class Command(BaseCommand):
         members = [
             {
                 "name": "Rajesh Sharma",
+                "name_ja": "ラジェシュ・シャルマ",
+                "name_ne": "राजेश शर्मा",
                 "role_en": "Founder & Chief Consultant",
                 "role_ja": "創業者・チーフコンサルタント",
                 "role_ne": "संस्थापक र मुख्य परामर्शदाता",
@@ -124,6 +126,8 @@ class Command(BaseCommand):
             },
             {
                 "name": "Yuki Tanaka",
+                "name_ja": "ユキ・タナカ",
+                "name_ne": "युकी तनाका",
                 "role_en": "Japan Education Specialist",
                 "role_ja": "日本教育スペシャリスト",
                 "role_ne": "जापान शिक्षा विशेषज्ञ",
@@ -133,6 +137,8 @@ class Command(BaseCommand):
             },
             {
                 "name": "Priya Adhikari",
+                "name_ja": "プリヤ・アディカリ",
+                "name_ne": "प्रिया अधिकारी",
                 "role_en": "Visa & Documentation Expert",
                 "role_ja": "ビザ・書類専門家",
                 "role_ne": "भिसा र कागजात विशेषज्ञ",
@@ -149,32 +155,59 @@ class Command(BaseCommand):
         testimonials = [
             {
                 "student_name": "Anil Gurung",
+                "student_name_ja": "アニル・グルン",
+                "student_name_ne": "अनिल गुरुङ",
                 "origin_country": "Nepal",
+                "origin_country_ja": "ネパール",
+                "origin_country_ne": "नेपाल",
                 "destination": "Waseda University, Tokyo",
+                "destination_ja": "早稲田大学（東京）",
+                "destination_ne": "वासेदा विश्वविद्यालय, टोकियो",
                 "rating": 5,
                 "quote_en": "3 Star Educational Consultant made my dream of studying in Japan a reality. Their visa support was flawless.",
                 "quote_ja": "3スターのサポートで日本留学の夢が叶いました。ビザサポートは完璧でした。",
                 "quote_ne": "3 Star Educational Consultant ले मेरो जापानमा पढ्ने सपना साकार पार्यो।",
-                "service_used": "Study Abroad + Visa", "is_featured": True,
+                "service_used": "Study Abroad + Visa",
+                "service_used_ja": "留学＋ビザサポート",
+                "service_used_ne": "विदेश अध्ययन + भिसा सहायता",
+                "is_featured": True,
             },
             {
                 "student_name": "Sita Rai",
+                "student_name_ja": "シタ・ライ",
+                "student_name_ne": "सिता राई",
                 "origin_country": "Nepal",
+                "origin_country_ja": "ネパール",
+                "origin_country_ne": "नेपाल",
                 "destination": "Osaka Language School",
+                "destination_ja": "大阪日本語学校",
+                "destination_ne": "ओसाका भाषा विद्यालय",
                 "rating": 5,
                 "quote_en": "I passed JLPT N3 on my first attempt thanks to the structured classes here.",
                 "quote_ja": "ここの体系的なクラスのおかげで、初めてのJLPT N3に合格しました。",
                 "quote_ne": "यहाँको व्यवस्थित कक्षाहरूको कारण मैले पहिलो प्रयासमा JLPT N3 पास गरें।",
-                "service_used": "JLPT Preparation", "is_featured": True,
+                "service_used": "JLPT Preparation",
+                "service_used_ja": "JLPT対策",
+                "service_used_ne": "JLPT तयारी",
+                "is_featured": True,
             },
             {
                 "student_name": "Bibek Thapa",
+                "student_name_ja": "ビベック・タパ",
+                "student_name_ne": "बिबेक थापा",
                 "origin_country": "Nepal",
+                "origin_country_ja": "ネパール",
+                "origin_country_ne": "नेपाल",
                 "destination": "Tokyo Institute of Technology",
+                "destination_ja": "東京工業大学",
+                "destination_ne": "टोकियो प्रौद्योगिकी संस्थान",
                 "rating": 5,
                 "quote_en": "Got a full scholarship with their guidance. I highly recommend 3 Star to everyone.",
                 "quote_ja": "彼らのサポートで全額奨学金を獲得しました。3スターを強くお勧めします。",
-                "service_used": "Scholarship Guidance", "is_featured": True,
+                "service_used": "Scholarship Guidance",
+                "service_used_ja": "奨学金サポート",
+                "service_used_ne": "छात्रवृत्ति मार्गदर्शन",
+                "is_featured": True,
             },
         ]
         for t in testimonials:

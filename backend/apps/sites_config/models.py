@@ -41,6 +41,10 @@ class SiteConfig(models.Model):
     # ── Branding ──────────────────────────────────────────
     site_name = models.CharField(max_length=200)
     tagline = models.CharField(max_length=300, blank=True)
+    site_name_ja = models.CharField(max_length=200, blank=True)
+    tagline_ja = models.CharField(max_length=300, blank=True)
+    site_name_ne = models.CharField(max_length=200, blank=True)
+    tagline_ne = models.CharField(max_length=300, blank=True)
     logo = models.ImageField(upload_to="logos/", blank=True, null=True)
     favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
     hero_bg_image = models.ImageField(upload_to="hero/", blank=True, null=True) 
@@ -66,10 +70,19 @@ class SiteConfig(models.Model):
     )
     font_heading = models.CharField(max_length=100, default="Noto Sans JP")
 
-    # ── Contact ───────────────────────────────────────────
+    # ── Contact EN ───────────────────────────────────────────
     address_line1 = models.CharField(max_length=200, blank=True)
     address_line2 = models.CharField(max_length=200, blank=True)
     city = models.CharField(max_length=100, blank=True)
+
+    address_line1_ja = models.CharField(max_length=200, blank=True)
+    address_line2_ja = models.CharField(max_length=200, blank=True)
+    city_ja = models.CharField(max_length=100, blank=True)
+
+    address_line1_ne = models.CharField(max_length=200, blank=True)
+    address_line2_ne = models.CharField(max_length=200, blank=True)
+    city_ne = models.CharField(max_length=100, blank=True)
+
     postal_code = models.CharField(max_length=20, blank=True)
     phone = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)
@@ -99,6 +112,12 @@ class SiteConfig(models.Model):
     # ── Footer ────────────────────────────────────────────
     footer_text = models.TextField(blank=True)
     copyright_text = models.CharField(max_length=200, blank=True)
+
+    footer_text_ja = models.TextField(blank=True)
+    copyright_text_ja = models.CharField(max_length=200, blank=True)
+
+    footer_text_ne = models.TextField(blank=True)
+    copyright_text_ne = models.CharField(max_length=200, blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
 

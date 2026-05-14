@@ -16,7 +16,7 @@ class SiteConfigInline(admin.StackedInline):
 
     fieldsets = (
         ("Branding", {
-            "fields": ("site_name", "tagline", "logo", "favicon", "hero_bg_image"),
+            "fields": ("site_name", "tagline", "site_name_ja", "tagline_ja", "site_name_ne", "tagline_ne","logo", "favicon", "hero_bg_image"),
         }),
         ("Colors", {
             "fields": (
@@ -32,8 +32,10 @@ class SiteConfigInline(admin.StackedInline):
         }),
         ("Contact", {
             "fields": (
-                "address_line1", "address_line2",
-                ("city", "postal_code"),
+                "address_line1", "address_line2", "city", 
+                "address_line1_ja", "address_line2_ja", "city_ja",
+                "address_line1_ne", "address_line2_ne", "city_ne",
+                ("postal_code"),
                 ("phone", "email"),
             ),
         }),
@@ -47,7 +49,11 @@ class SiteConfigInline(admin.StackedInline):
             ),
         }),
         ("Footer", {
-            "fields": ("footer_text", "copyright_text"),
+            "fields": (
+                "footer_text", "copyright_text",
+                "footer_text_ja", "copyright_text_ja",
+                "footer_text_ne", "copyright_text_ne",
+            ),
         }),
     )
 

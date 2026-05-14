@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSite } from "../../context/SiteContext";
+import { useLang } from "../../hooks/useLang";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 
 export default function Navbar() {
   const { config, nav, loading } = useSite();
-  const { i18n } = useTranslation();
+  const tl = useLang();
+  const { t, i18n } = useTranslation();
   const location = useLocation(); // ✅ hook-based, reactive
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const lang = i18n.language?.slice(0, 2) || "en";
+  const lang =
+    i18n.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -88,14 +91,14 @@ export default function Navbar() {
                 />
                 <img
                   src={config.logo_url}
-                  alt={config.site_name || "Logo"}
+                  alt={tl(config, "site_name") || "Logo"}
                   className="relative object-contain transition-all duration-300 group-hover:scale-105"
                   style={{ height: scrolled ? "46px" : "54px" }}
                 />
               </div>
             ) : (
               <span className="text-2xl font-extrabold tracking-tight text-white">
-                {config?.site_name || "3 Star"}
+                {tl(config, "site_name") || "3 Star"}
               </span>
             )}
 
@@ -103,11 +106,11 @@ export default function Navbar() {
             {config?.site_name && (
               <div className="hidden lg:block">
                 <p className="text-lg font-bold leading-tight">
-                  {config.site_name}
+                  {tl(config, "site_name")}
                 </p>
                 {config?.tagline && (
                   <p className="text-xs text-slate-500 leading-tight">
-                    {config.tagline}
+                    {tl(config, "tagline")}
                   </p>
                 )}
               </div>
@@ -181,7 +184,7 @@ export default function Navbar() {
                 boxShadow: "0 4px 18px rgba(232,150,10,0.42)",
               }}
             >
-              Free Consultation
+              {t("nav.free.consultation")}
             </Link>
 
             {/* Mobile hamburger */}

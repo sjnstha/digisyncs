@@ -77,10 +77,10 @@ export default function WhyUs() {
               className="text-3xl font-bold mb-3 text-white"
               style={{ fontFamily: "var(--font-site)" }}
             >
-              {t("whyus.title", "Why Choose Us?")}
+              {t("home.whyus.title", "Why Choose Us?")}
             </h2>
             <p className="text-base text-blue-200 max-w-2xl mx-auto">
-              {t("whyus.subtitle", "We Connect You to the World")}
+              {t("home.whyus.subtitle", "We Connect You to the World")}
             </p>
             <div className="mt-3 flex justify-center gap-1">
               <span className="inline-block h-1 w-12 rounded-full bg-white" />
@@ -111,13 +111,13 @@ export default function WhyUs() {
               </span>
               <div>
                 <h3 className="font-bold text-white mb-1">
-                  {t(`whyus.${f.key}.title`, f.titleEn)}
+                  {t(`home.whyus.${f.key}.title`, f.titleEn)}
                 </h3>
                 <p
                   className="text-sm leading-relaxed"
                   style={{ color: "rgba(255,255,255,0.72)" }}
                 >
-                  {t(`whyus.${f.key}.desc`, f.descEn)}
+                  {t(`home.whyus.${f.key}.desc`, f.descEn)}
                 </p>
               </div>
             </div>

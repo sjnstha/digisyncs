@@ -36,10 +36,10 @@ export default function StatsBar() {
                   letterSpacing: "-1px",
                 }}
               >
-                {stat.value}
+                {tl(stat, "value")} {/* 500+ */}
               </div>
               <div className="text-sm font-semibold opacity-90 tracking-wide">
-                {tl(stat, "label")}
+                {tl(stat, "label")} {/* Students Placed or 留学生 */}
               </div>
             </div>
           ))}
