@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { SiteProvider } from "./context/SiteContext";
 import { useSite } from "./context/SiteContext";
 import Navbar from "./components/layout/Navbar";
@@ -13,6 +14,9 @@ import ServicesPage from "./pages/Services/index";
 import CoursesPage from "./pages/Courses/index";
 import NewsPage from "./pages/News/index";
 import ContactPage from "./pages/Contact/index";
+import NewsDetailPage from "./pages/News/DetailPage";
+// import GalleryPage from "./pages/Gallery/index";
+// import ContactPage from "./pages/Contact/index";
 
 function AppShell() {
   const { loading, error } = useSite();
@@ -50,6 +54,8 @@ function AppShell() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/:slug" element={<NewsDetailPage />} />
+          {/* <Route path="/gallery"  element={<GalleryPage />} /> */}
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
@@ -60,10 +66,12 @@ function AppShell() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <SiteProvider>
-        <AppShell />
-      </SiteProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <SiteProvider>
+          <AppShell />
+        </SiteProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }

@@ -18,7 +18,7 @@ export default function ServicesPage() {
     <div style={{ fontFamily: "var(--font-site)" }}>
       <PageHero
         badge="WHAT WE OFFER"
-        title={t("services.page_title", "Our Services")}
+        title={t("home.service.section_title", "Our Services")}
         subtitle={t(
           "services.page_subtitle",
           "Everything you need for a successful journey to Japan — under one roof",
@@ -76,7 +76,7 @@ export default function ServicesPage() {
                         className="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full mb-3"
                         style={{ background: "#fff4d6", color: "#92400e" }}
                       >
-                        ⭐ Featured
+                        ⭐ {t("home.service.featured", "Featured")}
                       </span>
                     )}
 

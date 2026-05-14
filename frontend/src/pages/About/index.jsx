@@ -37,12 +37,35 @@ function Avatar({ name, photoUrl }) {
 
 export default function AboutPage() {
   const { t } = useTranslation();
-  const { config } = useSite();
+  const { config, stats } = useSite();
   const { data: team, loading } = useContent(fetchTeam);
   const tl = useLang();
   const missionRef = useScrollAnimation();
   const valuesRef = useScrollAnimation();
   const teamRef = useScrollAnimation();
+
+  const CONTENT = {
+    integrity: {
+      icon: "🌟",
+      title: "Integrity",
+      desc: "Honest, transparent guidance with your best interests always at heart.",
+      color: "var(--color-primary)",
+    },
+
+    commitment: {
+      icon: "🤝",
+      title: "Commitment",
+      desc: "We stay with you from your very first inquiry to post-arrival settlement.",
+      color: "var(--color-accent)",
+    },
+
+    excellence: {
+      icon: "🌏",
+      title: "Excellence",
+      desc: "Only the best schools, opportunities, and outcomes for every student.",
+      color: "var(--color-primary)",
+    },
+  };
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
@@ -51,7 +74,7 @@ export default function AboutPage() {
         title={t("about.title", "About Us")}
         subtitle={t(
           "about.subtitle",
-          "Connecting ambitious students to world-class education in Japan since 2010",
+          "Connecting ambitious students to world-class education in Japan since 2020",
         )}
       />
 
@@ -67,7 +90,7 @@ export default function AboutPage() {
                 className="inline-block text-xs font-bold tracking-widest px-3 py-1 rounded-full mb-5"
                 style={{ background: "#fff4d6", color: "var(--color-accent)" }}
               >
-                OUR MISSION
+                {t("about.ourmission", "OUR MISSION")}
               </span>
               <h2
                 className="text-3xl font-extrabold mb-5 leading-tight"
@@ -97,7 +120,7 @@ export default function AboutPage() {
                   color: "var(--color-primary)",
                 }}
               >
-                "We Connect You to the World."
+                {config?.tagline && tl(config, "tagline")}
               </blockquote>
             </div>
 
@@ -120,16 +143,16 @@ export default function AboutPage() {
                   </div>
                 )}
               </div>
-              {/* Floating stat badge */}
+              {/* Floating stats badge */}
               <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lg px-5 py-3 border border-gray-100">
                 <div
                   className="font-black text-2xl"
                   style={{ color: "var(--color-accent)" }}
                 >
-                  500+
+                  {stats && stats.length > 0 && tl(stats[0], "value")}
                 </div>
                 <div className="text-xs font-semibold text-gray-500">
-                  Students placed
+                  {stats && stats.length > 0 && tl(stats[0], "label")}
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-lg px-5 py-3 border border-gray-100">
@@ -137,10 +160,14 @@ export default function AboutPage() {
                   className="font-black text-2xl"
                   style={{ color: "var(--color-primary)" }}
                 >
-                  98%
+                  {stats &&
+                    stats.length > 0 &&
+                    tl(stats[stats.length - 1], "value")}
                 </div>
                 <div className="text-xs font-semibold text-gray-500">
-                  Visa success
+                  {stats &&
+                    stats.length > 0 &&
+                    tl(stats[stats.length - 1], "label")}
                 </div>
               </div>
             </div>
@@ -156,53 +183,41 @@ export default function AboutPage() {
             ref={valuesRef}
             className="scroll-fade-group grid grid-cols-1 sm:grid-cols-3 gap-6"
           >
-            {[
-              {
-                icon: "🌟",
-                title: "Integrity",
-                desc: "Honest, transparent guidance with your best interests always at heart.",
-                color: "var(--color-primary)",
-              },
-              {
-                icon: "🤝",
-                title: "Commitment",
-                desc: "We stay with you from your very first inquiry to post-arrival settlement.",
-                color: "var(--color-accent)",
-              },
-              {
-                icon: "🌏",
-                title: "Excellence",
-                desc: "Only the best schools, opportunities, and outcomes for every student.",
-                color: "var(--color-primary)",
-              },
-            ].map((v) => (
-              <div
-                key={v.title}
-                className="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-shadow border border-gray-100"
-              >
+            {Object.keys(CONTENT).map((key) => {
+              const v = CONTENT[key];
+              return (
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm"
-                  style={{
-                    background:
-                      v.color === "var(--color-accent)" ? "#fff4d6" : "#e8ecfa",
-                  }}
+                  key={key}
+                  className="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-md transition-shadow border border-gray-100"
                 >
-                  {v.icon}
+                  <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm"
+                    style={{
+                      background:
+                        v.color === "var(--color-accent)"
+                          ? "#fff4d6"
+                          : "#e8ecfa",
+                    }}
+                  >
+                    {v.icon}
+                  </div>
+
+                  <h3
+                    className="font-bold text-lg mb-2"
+                    style={{ color: "var(--color-primary)" }}
+                  >
+                    {t(`about.content.${key}.title`, v.title)}
+                  </h3>
+
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: "var(--color-secondary)" }}
+                  >
+                    {t(`about.content.${key}.desc`, v.desc)}
+                  </p>
                 </div>
-                <h3
-                  className="font-bold text-lg mb-2"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  {v.title}
-                </h3>
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "var(--color-secondary)" }}
-                >
-                  {v.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -210,7 +225,7 @@ export default function AboutPage() {
       {/* Team */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle title={t("team.section_title", "Meet Our Team")} />
+          <SectionTitle title={t("home.team.section_title", "Meet Our Team")} />
           {loading ? (
             <LoadingSpinner />
           ) : (
@@ -237,7 +252,7 @@ export default function AboutPage() {
                     className="font-bold text-lg"
                     style={{ color: "var(--color-primary)" }}
                   >
-                    {member.name}
+                    {tl(member, "name")}
                   </h3>
                   <p
                     className="text-xs font-bold mt-1 mb-4 px-3 py-1 rounded-full inline-block"

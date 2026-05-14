@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { MapPin } from "lucide-react";
 import { useContent } from "../../hooks/useContent";
 import { fetchNewsAll } from "../../api/contentApi";
 import { useLang } from "../../hooks/useLang";
@@ -8,7 +9,7 @@ import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
-function NewsCard({ item, tl }) {
+function NewsCard({ item, tl, t }) {
   const isEvent = item.type === "event";
   const date = new Date(
     item.event_date || item.published_at,
@@ -48,12 +49,14 @@ function NewsCard({ item, tl }) {
                 : "var(--color-primary)",
             }}
           >
-            {isEvent ? "Event" : "News"}
+            {isEvent
+              ? t("news.tab.event", "Events")
+              : t("news.tab.news", "News")}
           </span>
           <span className="text-xs text-gray-400">{date}</span>
           {item.is_featured && (
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">
-              ⭐ Featured
+              ⭐ {t("home.service.featured", "Featured")}
             </span>
           )}
         </div>
@@ -75,7 +78,13 @@ function NewsCard({ item, tl }) {
         )}
 
         {isEvent && item.event_location && (
-          <p className="text-xs text-gray-400 mb-3">📍 {item.event_location}</p>
+          <p className="text-xs text-gray-400 mb-3">
+            <MapPin
+              className="w-4 h-4 mt-0.5 flex-shrink-0"
+              style={{ color: "var(--color-accent)" }}
+            />
+            <span>{tl(item, "event_location")}</span>
+          </p>
         )}
 
         <Link
@@ -83,7 +92,7 @@ function NewsCard({ item, tl }) {
           className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors hover:gap-3 duration-200"
           style={{ color: "var(--color-primary)" }}
         >
-          Read more <span>→</span>
+          {t("news.readmore", "Read more")} <span>→</span>
         </Link>
       </div>
     </div>
@@ -134,7 +143,9 @@ export default function NewsPage() {
                     filter === key ? "0 4px 14px rgba(45,62,176,0.25)" : "none",
                 }}
               >
-                {label}
+                {key === "all"
+                  ? t("common.all", key)
+                  : t(`news.tab.${key}`, key)}
               </button>
             ))}
           </div>
@@ -144,7 +155,9 @@ export default function NewsPage() {
           ) : filtered.length === 0 ? (
             <div className="py-20 text-center text-gray-400">
               <div className="text-5xl mb-3">📭</div>
-              <p className="text-sm">No items found.</p>
+              <p className="text-sm">
+                {t("common.noitems", "No items found.")}
+              </p>
             </div>
           ) : (
             <div
@@ -152,7 +165,7 @@ export default function NewsPage() {
               className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
             >
               {filtered.map((item) => (
-                <NewsCard key={item.id} item={item} tl={tl} />
+                <NewsCard key={item.id} item={item} tl={tl} t={t} />
               ))}
             </div>
           )}
