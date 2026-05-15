@@ -15,7 +15,7 @@ const CONTACT_FIELDS = [
     name: "emailaddress",
     label: "Email Address",
     type: "email",
-    required: false,
+    required: true,
   },
   { name: "phonenumber", label: "Phone Number", type: "tel", required: true },
 ];

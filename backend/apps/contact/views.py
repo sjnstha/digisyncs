@@ -19,12 +19,6 @@ def submit_contact(request):
     """
     data = request.data
 
-    print(settings.EMAIL_HOST)
-    print(settings.EMAIL_HOST_USER)
-    print(settings.EMAIL_HOST_PASSWORD)
-    print(settings.DEFAULT_FROM_EMAIL)
-    print(settings.ADMIN_EMAIL)
-
     # Validate required fields
     errors = {}
     for field in ("name", "email", "message"):
