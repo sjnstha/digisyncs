@@ -22,7 +22,6 @@ const LEVEL_META = {
     bg: "#eff6ff",
     border: "#3b82f6",
     badge: "#3b82f6",
-    label: "Elementary",
     label: {
       en: "Elementary",
       ja: "初級後半",
@@ -33,7 +32,6 @@ const LEVEL_META = {
     bg: "#fffbeb",
     border: "#f59e0b",
     badge: "#f59e0b",
-    label: "Intermediate",
     label: {
       en: "Intermediate",
       ja: "中級",
@@ -44,7 +42,6 @@ const LEVEL_META = {
     bg: "#fef2f2",
     border: "#ef4444",
     badge: "#ef4444",
-    label: "Upper Int.",
     label: {
       en: "Upper Intermediate",
       ja: "上級",
@@ -55,7 +52,6 @@ const LEVEL_META = {
     bg: "#f5f3ff",
     border: "#8b5cf6",
     badge: "#8b5cf6",
-    label: "Advanced",
     label: {
       en: "Advanced",
       ja: "最上級",
@@ -141,7 +137,8 @@ export default function CoursesPreview() {
                   >
                     {course.duration_weeks && (
                       <div className="flex items-center gap-1.5">
-                        <span>⏱</span> {course.duration_weeks} weeks
+                        <span>⏱</span> {course.duration_weeks}{" "}
+                        {t("course.duration.weeks", "weeks")}
                       </div>
                     )}
                     {course.schedule && (

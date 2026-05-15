@@ -168,8 +168,8 @@ export default function Navbar() {
             <div
               className="hidden sm:flex items-center rounded-xl px-2 py-1.5"
               style={{
-                background: "rgba(255,255,255,0.07)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(0,0,0,0.05)",
+                border: "1px solid rgba(0,0,0,0.10)",
               }}
             >
               <LanguageSwitcher />
@@ -191,11 +191,11 @@ export default function Navbar() {
             <button
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
-              className="md:hidden p-2.5 rounded-xl transition-colors"
+              className="flex md:hidden p-2.5 rounded-xl transition-colors"
               style={{
-                background: "rgba(255,255,255,0.08)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "#fff",
+                background: "rgba(0,0,0,0.06)",
+                border: "1px solid rgba(0,0,0,0.12)",
+                color: "var(--color-navbar-text)",
               }}
             >
               <svg
@@ -241,10 +241,8 @@ export default function Navbar() {
                     style={{
                       color: active
                         ? "var(--color-accent)"
-                        : "rgba(255,255,255,0.87)",
-                      background: active
-                        ? "rgba(255,255,255,0.07)"
-                        : "transparent",
+                        : "var(--color-navbar-text)",
+                      background: active ? "rgba(0,0,0,0.06)" : "transparent",
                     }}
                   >
                     {active && (
@@ -262,7 +260,7 @@ export default function Navbar() {
               <div className="sm:hidden mt-2 px-2">
                 <div
                   className="rounded-xl p-2"
-                  style={{ background: "rgba(255,255,255,0.07)" }}
+                  style={{ background: "rgba(0,0,0,0.05)" }}
                 >
                   <LanguageSwitcher />
                 </div>
@@ -275,7 +273,7 @@ export default function Navbar() {
                   className="block text-center py-3 rounded-xl font-bold text-sm text-white"
                   style={{ background: "var(--color-accent)" }}
                 >
-                  Free Consultation
+                  {t("nav.free.consultation", "Free Consultation")}
                 </Link>
               </div>
             </div>

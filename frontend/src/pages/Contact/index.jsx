@@ -7,6 +7,8 @@ import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import SectionTitle from "../../components/ui/SectionTitle";
 
+import api from "../../api/client";
+
 const CONTACT_FIELDS = [
   { name: "fullname", label: "Full Name", type: "text", required: true },
   {
@@ -31,29 +33,52 @@ const SERVICE_OPTIONS = [
 export default function ContactPage() {
   const { t } = useTranslation();
   const tl = useLang();
-  const { config } = useSite();
+  const { config, country } = useSite();
   const formRef = useScrollAnimation();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
+
+  const EMPTY_FORM = {
+    fullname: "",
+    emailaddress: "",
+    phonenumber: "",
     service: "",
     message: "",
-  });
+  };
+
+  const [form, setForm] = useState(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     setSending(true);
-    // Phase 4: POST to /api/contact/
-    setTimeout(() => {
-      setSending(false);
+    setServerError("");
+
+    try {
+      // ✅ Fix 2: uses axios client — works in dev (Vite proxy) AND production
+      await api.post("contact/", {
+        name: form.fullname,
+        email: form.emailaddress,
+        phone: form.phonenumber,
+        service: SERVICE_OPTIONS[form.service],
+        message: form.message,
+        country_code: country.code || localStorage.getItem("country") || "JP",
+      });
+
       setSubmitted(true);
-    }, 800);
+      setForm(EMPTY_FORM);
+    } catch (error) {
+      const msg = error?.response?.data?.errors
+        ? Object.values(error.response.data.errors).flat().join(" ")
+        : error?.response?.data?.detail || "Failed to send. Please try again.";
+      setServerError(msg);
+    } finally {
+      setSending(false);
+    }
   };
 
   const contactItems = [
@@ -283,7 +308,7 @@ export default function ContactPage() {
                         )}
                       </option>
                       {SERVICE_OPTIONS.map((s, index) => (
-                        <option key={s}>
+                        <option key={s} value={index}>
                           {t(`contact.message.service.option${index}`, s)}
                         </option>
                       ))}
@@ -311,6 +336,12 @@ export default function ContactPage() {
                       }}
                     />
                   </div>
+
+                  {serverError && (
+                    <div className="text-sm text-red-500 font-medium">
+                      {serverError}
+                    </div>
+                  )}
 
                   <button
                     type="submit"

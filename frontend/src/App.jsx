@@ -16,8 +16,7 @@ import CoursesPage from "./pages/Courses/index";
 import NewsPage from "./pages/News/index";
 import ContactPage from "./pages/Contact/index";
 import NewsDetailPage from "./pages/News/DetailPage";
-// import GalleryPage from "./pages/Gallery/index";
-// import ContactPage from "./pages/Contact/index";
+import GalleryPage from "./pages/Gallery/index";
 
 function AppShell() {
   const { config, loading, error } = useSite();
@@ -70,7 +69,7 @@ function AppShell() {
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/news/:slug" element={<NewsDetailPage />} />
-            {/* <Route path="/gallery"  element={<GalleryPage />} /> */}
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </main>

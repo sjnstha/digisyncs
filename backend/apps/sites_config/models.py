@@ -119,6 +119,12 @@ class SiteConfig(models.Model):
     footer_text_ne = models.TextField(blank=True)
     copyright_text_ne = models.CharField(max_length=200, blank=True)
 
+    meta_title       = models.CharField(max_length=70,  blank=True, help_text="Browser tab title / Google title (max 60 chars recommended)")
+    meta_description = models.TextField(max_length=160, blank=True, help_text="Google search snippet (max 155 chars recommended)")
+    og_image         = models.ImageField(upload_to="seo/", blank=True, null=True, help_text="Open Graph image shown when sharing on social media (1200×630px recommended)")
+    canonical_url    = models.URLField(blank=True, help_text="Canonical domain e.g. https://www.3staredu.jp")
+    google_analytics_id = models.CharField(max_length=30, blank=True, help_text="Google Analytics 4 Measurement ID e.g. G-XXXXXXXXXX")
+
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
