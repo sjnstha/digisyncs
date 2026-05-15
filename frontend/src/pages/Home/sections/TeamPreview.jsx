@@ -18,13 +18,13 @@ function Avatar({ name, photoUrl }) {
       <img
         src={photoUrl}
         alt={name}
-        className="w-24 h-24 rounded-full object-cover mx-auto mb-4 ring-4 ring-white shadow-md"
+        className="w-32 h-32 rounded-full object-contain object-top bg-white mx-auto mb-4 ring-4 ring-white shadow-md p-1"
       />
     );
   }
   return (
     <div
-      className="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-black text-white shadow-md ring-4 ring-white"
+      className="w-32 h-32 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-black text-white shadow-md ring-4 ring-white"
       style={{
         background: "linear-gradient(135deg, var(--color-primary), #4a5bcf)",
       }}
