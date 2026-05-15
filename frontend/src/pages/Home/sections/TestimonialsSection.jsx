@@ -76,7 +76,7 @@ export default function TestimonialsSection() {
                     className="inline-block mt-3 text-xs px-2.5 py-0.5 rounded-full font-medium"
                     style={{ background: "#fff4d6", color: "#92400e" }}
                   >
-                    {item.service_used}
+                    {tl(item, "service_used")}
                   </span>
                 )}
 
@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
                   {item.photo_url ? (
                     <img
                       src={item.photo_url}
-                      alt={item.student_name}
+                      alt={tl(item, "student_name")}
                       className="w-11 h-11 rounded-full object-cover ring-2"
                       style={{ ringColor: "var(--color-accent)" }}
                     />
@@ -93,7 +93,7 @@ export default function TestimonialsSection() {
                       className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
                       style={{ background: "var(--color-primary)" }}
                     >
-                      {item.student_name[0]}
+                      {tl(item, "student_name")[0]}
                     </div>
                   )}
                   <div>
@@ -101,11 +101,11 @@ export default function TestimonialsSection() {
                       className="font-bold text-sm"
                       style={{ color: "var(--color-primary)" }}
                     >
-                      {item.student_name}
+                      {tl(item, "student_name")}
                     </p>
                     {item.destination && (
                       <p className="text-xs text-gray-500">
-                        → {item.destination}
+                        → {tl(item, "destination")}
                       </p>
                     )}
                   </div>

@@ -303,7 +303,12 @@ export default function Footer() {
           </p>
           <span className="hidden sm:block opacity-40">|</span>
           <p className="text-xs text-slate-400">
-            {t("footer.developer", "Designed & Developed by Sajan Shrestha")}
+            <a
+              href="mailto:jamescena61@gmail.com"
+              className="text-orange-400 hover:text-orange-300 underline"
+            >
+              {t("footer.developer", "Designed & Developed by Sajan Shrestha")}
+            </a>
           </p>
           <span className="hidden sm:block opacity-40">|</span>
           <div className="flex gap-5">
