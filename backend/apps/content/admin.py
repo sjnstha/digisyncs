@@ -65,7 +65,7 @@ class NewsEventAdmin(admin.ModelAdmin):
             "classes": ("collapse",),
         }),
         ("Media & Event details", {
-            "fields": ("cover_image", "event_date", "event_location", "event_location_ja", "event_location_ne"),
+            "fields": ("cover_image", "event_date", "event_location", "event_location_ja", "event_location_ne", "google_maps_url"),
         }),
     )
 

@@ -69,7 +69,7 @@ class NewsEventSerializer(serializers.ModelSerializer):
             "excerpt_en", "excerpt_ja", "excerpt_ne",
             "body_en", "body_ja", "body_ne",
             "cover_image_url",
-            "event_date", "event_location", "event_location_ja", "event_location_ne",
+            "event_date", "event_location", "event_location_ja", "event_location_ne", "google_maps_url",
             "published_at", "is_featured",
         ]
 

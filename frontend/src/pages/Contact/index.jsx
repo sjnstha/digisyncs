@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { useSite } from "../../context/SiteContext";
+import { useLang } from "../../hooks/useLang";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import SectionTitle from "../../components/ui/SectionTitle";
 
 const CONTACT_FIELDS = [
-  { name: "name", label: "Full Name", type: "text", required: true },
-  { name: "email", label: "Email Address", type: "email", required: true },
-  { name: "phone", label: "Phone Number", type: "tel", required: false },
+  { name: "fullname", label: "Full Name", type: "text", required: true },
+  {
+    name: "emailaddress",
+    label: "Email Address",
+    type: "email",
+    required: false,
+  },
+  { name: "phonenumber", label: "Phone Number", type: "tel", required: true },
 ];
 
 const SERVICE_OPTIONS = [
@@ -23,6 +30,7 @@ const SERVICE_OPTIONS = [
 
 export default function ContactPage() {
   const { t } = useTranslation();
+  const tl = useLang();
   const { config } = useSite();
   const formRef = useScrollAnimation();
   const [form, setForm] = useState({
@@ -50,21 +58,25 @@ export default function ContactPage() {
 
   const contactItems = [
     {
-      icon: "📍",
-      label: "Address",
-      value: [config?.address_line1, config?.address_line2, config?.city]
+      key: "address",
+      label: t("home.contact.address"),
+      value: [
+        tl(config, "address_line1"),
+        tl(config, "address_line2"),
+        tl(config, "city"),
+      ]
         .filter(Boolean)
         .join(", "),
     },
     {
-      icon: "📞",
-      label: "Phone",
+      key: "phone",
+      label: t("home.contact.phone"),
       value: config?.phone,
       href: `tel:${config?.phone}`,
     },
     {
-      icon: "✉️",
-      label: "Email",
+      key: "email",
+      label: t("home.contact.email"),
       value: config?.email,
       href: `mailto:${config?.email}`,
     },
@@ -74,7 +86,7 @@ export default function ContactPage() {
     <div style={{ fontFamily: "var(--font-site)" }}>
       <PageHero
         badge="GET IN TOUCH"
-        title={t("contact.title", "Contact Us")}
+        title={t("contact.title", "Reach Out to Us")}
         subtitle={t(
           "contact.subtitle",
           "Get a free consultation today — we respond within 24 hours",
@@ -86,17 +98,49 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
             {/* ── Left: Info + Map ── */}
             <div>
-              <SectionTitle title="Get In Touch" center={false} />
+              <SectionTitle
+                title={t("contact.subsection.left.title", "Get In Touch")}
+                center={false}
+              />
 
               <div className="space-y-5 mb-8">
-                {contactItems.map(({ icon, label, value, href }) => (
+                {contactItems.map(({ icon, key, label, value, href }) => (
                   <div key={label} className="flex items-start gap-4">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0 shadow-sm"
-                      style={{ background: "var(--color-primary)" }}
-                    >
-                      {icon}
-                    </div>
+                    {key === "address" && (
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: "var(--color-primary)",
+                          color: "#fff",
+                        }}
+                      >
+                        <MapPin className="w-5 h-5" />
+                      </div>
+                    )}
+
+                    {key === "phone" && (
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: "var(--color-primary)",
+                          color: "#fff",
+                        }}
+                      >
+                        <Phone className="w-5 h-5" />
+                      </div>
+                    )}
+
+                    {key === "email" && (
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: "var(--color-primary)",
+                          color: "#fff",
+                        }}
+                      >
+                        <Mail className="w-5 h-5" />
+                      </div>
+                    )}
                     <div>
                       <p
                         className="text-xs font-extrabold uppercase tracking-widest mb-0.5"
@@ -151,7 +195,10 @@ export default function ContactPage() {
 
             {/* ── Right: Form ── */}
             <div ref={formRef} className="scroll-fade">
-              <SectionTitle title="Send a Message" center={false} />
+              <SectionTitle
+                title={t("contact.subsection.right.title", "Send a Message")}
+                center={false}
+              />
 
               {submitted ? (
                 <div
@@ -163,16 +210,19 @@ export default function ContactPage() {
                     className="font-extrabold text-xl mb-2"
                     style={{ color: "#15803d" }}
                   >
-                    Message Sent!
+                    {t("contact.message.sent.title", "Message Sent!")}
                   </h3>
                   <p className="text-sm text-gray-500 mb-6">
-                    We'll get back to you within 24 hours.
+                    {t(
+                      "contact.message.sent.subtitle",
+                      "We'll get back to you within 24 hours.",
+                    )}
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="text-sm font-semibold underline text-gray-400 hover:text-gray-600"
                   >
-                    Send another message
+                    {t("contact.message.resend", "Send another message")}
                   </button>
                 </div>
               ) : (
@@ -183,7 +233,7 @@ export default function ContactPage() {
                         className="block text-sm font-bold mb-1.5"
                         style={{ color: "var(--color-primary)" }}
                       >
-                        {label}{" "}
+                        {t(`contact.message.${name}`, label)}{" "}
                         {required && (
                           <span style={{ color: "var(--color-accent)" }}>
                             *
@@ -211,7 +261,10 @@ export default function ContactPage() {
                       className="block text-sm font-bold mb-1.5"
                       style={{ color: "var(--color-primary)" }}
                     >
-                      Service Interested In
+                      {t(
+                        "contact.message.service.interested",
+                        "Service Interested In",
+                      )}
                     </label>
                     <select
                       name="service"
@@ -223,9 +276,16 @@ export default function ContactPage() {
                         fontFamily: "var(--font-site)",
                       }}
                     >
-                      <option value="">Select a service...</option>
-                      {SERVICE_OPTIONS.map((s) => (
-                        <option key={s}>{s}</option>
+                      <option value="">
+                        {t(
+                          "contact.message.service.select",
+                          "Select a service...",
+                        )}
+                      </option>
+                      {SERVICE_OPTIONS.map((s, index) => (
+                        <option key={s}>
+                          {t(`contact.message.service.option${index}`, s)}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -235,7 +295,7 @@ export default function ContactPage() {
                       className="block text-sm font-bold mb-1.5"
                       style={{ color: "var(--color-primary)" }}
                     >
-                      Your Message{" "}
+                      {t("contact.message.your.message", "Your Message")}{" "}
                       <span style={{ color: "var(--color-accent)" }}>*</span>
                     </label>
                     <textarea
@@ -263,7 +323,7 @@ export default function ContactPage() {
                     }}
                   >
                     {sending
-                      ? "Sending..."
+                      ? t("contact.form_submit.sending", "Sending...")
                       : t("contact.form_submit", "Send Message →")}
                   </button>
                 </form>

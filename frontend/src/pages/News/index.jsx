@@ -9,11 +9,11 @@ import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
-function NewsCard({ item, tl, t }) {
+function NewsCard({ item, tl, t, lang }) {
   const isEvent = item.type === "event";
   const date = new Date(
     item.event_date || item.published_at,
-  ).toLocaleDateString(undefined, {
+  ).toLocaleDateString(lang === "ja" ? "ja-JP" : undefined, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -78,12 +78,24 @@ function NewsCard({ item, tl, t }) {
         )}
 
         {isEvent && item.event_location && (
-          <p className="text-xs text-gray-400 mb-3">
+          <p className="flex items-center gap-2 text-xs mb-3">
             <MapPin
               className="w-4 h-4 mt-0.5 flex-shrink-0"
               style={{ color: "var(--color-accent)" }}
             />
-            <span>{tl(item, "event_location")}</span>
+            {item.google_maps_url ? (
+              <a
+                href={item.google_maps_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+                style={{ color: "var(--color-primary)" }}
+              >
+                {tl(item, "event_location")}
+              </a>
+            ) : (
+              <span>{tl(item, "event_location")}</span>
+            )}
           </p>
         )}
 
@@ -101,6 +113,9 @@ function NewsCard({ item, tl, t }) {
 
 export default function NewsPage() {
   const { t } = useTranslation();
+  const lang =
+    t.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
+
   const { data, loading } = useContent(fetchNewsAll);
   const tl = useLang();
   const gridRef = useScrollAnimation();
@@ -165,7 +180,7 @@ export default function NewsPage() {
               className="scroll-fade-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
             >
               {filtered.map((item) => (
-                <NewsCard key={item.id} item={item} tl={tl} t={t} />
+                <NewsCard key={item.id} item={item} tl={tl} t={t} lang={lang} />
               ))}
             </div>
           )}

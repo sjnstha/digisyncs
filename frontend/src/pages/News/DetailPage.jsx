@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { MapPin } from "lucide-react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaXTwitter,
+  FaYoutube,
+  FaLine,
+  FaLinkedinIn,
+  FaTiktok,
+  FaWhatsapp,
+} from "react-icons/fa6";
 import { useSite } from "../../context/SiteContext";
 import { useLang } from "../../hooks/useLang";
 import { fetchNewsDetail, fetchNewsAll } from "../../api/contentApi";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 // ── Related card ─────────────────────────────────────────────────
-function RelatedCard({ item, tl }) {
+function RelatedCard({ item, tl, t, lang }) {
   const isEvent = item.type === "event";
   const date = new Date(
     item.event_date || item.published_at,
-  ).toLocaleDateString(undefined, {
+  ).toLocaleDateString(lang === "ja" ? "ja-JP" : undefined, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -49,7 +60,7 @@ function RelatedCard({ item, tl }) {
               : "var(--color-primary)",
           }}
         >
-          {isEvent ? "Event" : "News"}
+          {isEvent ? t("news.tab.event", "Events") : t("news.tab.news", "News")}
         </span>
         <p
           className="text-sm font-semibold line-clamp-2 leading-snug"
@@ -68,6 +79,8 @@ export default function NewsDetailPage() {
   const { slug } = useParams();
   const { countryCode } = useSite();
   const { t } = useTranslation();
+  const lang =
+    t.language?.slice(0, 2) || localStorage.getItem("i18nextLng") || "en";
   const tl = useLang();
   const navigate = useNavigate();
 
@@ -110,17 +123,20 @@ export default function NewsDetailPage() {
           className="text-2xl font-bold"
           style={{ color: "var(--color-primary)" }}
         >
-          Article not found
+          {t("news.article.notfound.title", "Article not found")}
         </h1>
         <p className="text-gray-500 text-sm">
-          This article may have been removed or the URL is incorrect.
+          {t(
+            "news.article.notfound.subtitle",
+            "This article may have been removed or the URL is incorrect.",
+          )}
         </p>
         <Link
           to="/news"
           className="mt-2 px-6 py-2.5 rounded-xl font-bold text-white"
           style={{ background: "var(--color-primary)" }}
         >
-          ← Back to News
+          ← {t("news.back", "Back to News")}
         </Link>
       </div>
     );
@@ -129,7 +145,7 @@ export default function NewsDetailPage() {
   const isEvent = item.type === "event";
   const publishDate = new Date(
     item.event_date || item.published_at,
-  ).toLocaleDateString(undefined, {
+  ).toLocaleDateString(lang === "ja" ? "ja-JP" : undefined, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -169,11 +185,11 @@ export default function NewsDetailPage() {
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-blue-300 mb-6">
             <Link to="/" className="hover:text-white transition-colors">
-              Home
+              {t("nav.home", "Home")}
             </Link>
             <span>›</span>
             <Link to="/news" className="hover:text-white transition-colors">
-              News & Events
+              {t("news.title", "News & Events")}
             </Link>
             <span>›</span>
             <span className="text-white/60 truncate max-w-[200px]">
@@ -191,12 +207,14 @@ export default function NewsDetailPage() {
                   : "rgba(255,255,255,0.2)",
               }}
             >
-              {isEvent ? "📅 Event" : "📰 News"}
+              {isEvent
+                ? `📅 ${t("news.tab.event", "Events")}`
+                : `📰 ${t("news.tab.news", "News")}`}
             </span>
             <span className="text-sm text-blue-200">{publishDate}</span>
             {item.is_featured && (
               <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-400 text-yellow-900">
-                ⭐ Featured
+                ⭐ {t("home.service.featured", "Featured")}
               </span>
             )}
           </div>
@@ -223,27 +241,62 @@ export default function NewsDetailPage() {
                 <div className="flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2.5">
                   <span className="text-lg">📅</span>
                   <div>
-                    <p className="text-xs text-blue-200 font-medium">Date</p>
+                    <p className="text-xs text-blue-200 font-medium">
+                      {t("news.event.date", "Date")}
+                    </p>
                     <p className="text-sm text-white font-semibold">
-                      {new Date(item.event_date).toLocaleString(undefined, {
-                        dateStyle: "full",
-                        timeStyle: "short",
-                      })}
+                      {lang === "ja"
+                        ? `${new Date(item.event_date).toLocaleDateString(
+                            "ja-JP",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            },
+                          )} ${new Date(item.event_date).toLocaleDateString(
+                            "ja-JP",
+                            {
+                              weekday: "long",
+                            },
+                          )} ${new Date(item.event_date).toLocaleTimeString(
+                            "ja-JP",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            },
+                          )}`
+                        : new Date(item.event_date).toLocaleString(undefined, {
+                            dateStyle: "full",
+                            timeStyle: "short",
+                          })}
                     </p>
                   </div>
                 </div>
               )}
               {item.event_location && (
-                <div className="flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2.5">
-                  <span className="text-lg">📍</span>
-                  <div>
-                    <p className="text-xs text-blue-200 font-medium">
-                      Location
-                    </p>
-                    <p className="text-sm text-white font-semibold">
-                      {item.event_location}
-                    </p>
-                  </div>
+                <div className="flex items-center gap-2 text-xs mb-3">
+                  <MapPin
+                    className="w-4 h-4 flex-shrink-0"
+                    style={{ color: "var(--color-accent)" }}
+                  />
+
+                  <span className="text-xs text-blue-200 font-medium">
+                    {t("news.detail.location", "Location")}
+                  </span>
+
+                  {item.google_maps_url ? (
+                    <a
+                      href={item.google_maps_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                      style={{ color: "var(--color-accent)" }}
+                    >
+                      {tl(item, "event_location")}
+                    </a>
+                  ) : (
+                    <span>{tl(item, "event_location")}</span>
+                  )}
                 </div>
               )}
             </div>
@@ -313,17 +366,23 @@ export default function NewsDetailPage() {
                     className="font-bold text-lg mb-2"
                     style={{ color: "#92400e" }}
                   >
-                    Interested in attending?
+                    {t("news.detail.cta.title", "Interested in attending?")}
                   </h3>
                   <p className="text-sm text-amber-800 mb-4">
-                    Contact us to register or find out more about this event.
+                    {t(
+                      "news.detail.cta.subtitle",
+                      "Contact us to register or find out more about this event.",
+                    )}
                   </p>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white"
-                    style={{ background: "var(--color-accent)" }}
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:scale-105"
+                    style={{
+                      background: "var(--color-accent)",
+                      boxShadow: "0 6px 20px rgba(232,150,10,0.35)",
+                    }}
                   >
-                    Register Now →
+                    {t("news.detail.cta.register", "Register Now")} →
                   </Link>
                 </div>
               )}
@@ -332,7 +391,7 @@ export default function NewsDetailPage() {
               <div className="mt-12 pt-6 border-t border-gray-100">
                 <button
                   onClick={() => navigate(-1)}
-                  className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3 duration-200"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors hover:gap-3 duration-200"
                   style={{ color: "var(--color-primary)" }}
                 >
                   ← {t("news.back", "Back to News")}
@@ -348,40 +407,89 @@ export default function NewsDetailPage() {
                   className="font-bold text-sm mb-4 uppercase tracking-wide"
                   style={{ color: "var(--color-primary)" }}
                 >
-                  Share
+                  {t("news.detail.share", "Share")}
                 </h3>
-                <div className="flex gap-2">
+
+                <div className="flex flex-wrap gap-3">
                   {[
                     {
                       label: "Facebook",
-                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-                      color: "#1877f2",
-                      icon: "f",
+                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        window.location.href,
+                      )}`,
+                      color: "#1877F2",
+                      icon: FaFacebookF,
                     },
+
+                    {
+                      label: "Instagram",
+                      href: `https://www.instagram.com/`,
+                      color:
+                        "linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4)",
+                      icon: FaInstagram,
+                    },
+
                     {
                       label: "X",
-                      href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(tl(item, "title"))}`,
-                      color: "#000",
-                      icon: "𝕏",
+                      href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                        window.location.href,
+                      )}&text=${encodeURIComponent(tl(item, "title"))}`,
+                      color: "#000000",
+                      icon: FaXTwitter,
                     },
+
+                    {
+                      label: "YouTube",
+                      href: `https://www.youtube.com/`,
+                      color: "#FF0000",
+                      icon: FaYoutube,
+                    },
+
                     {
                       label: "LINE",
-                      href: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(window.location.href)}`,
-                      color: "#06c755",
-                      icon: "L",
+                      href: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+                        window.location.href,
+                      )}`,
+                      color: "#06C755",
+                      icon: FaLine,
                     },
-                  ].map(({ label, href, color, icon }) => (
+
+                    {
+                      label: "LinkedIn",
+                      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                        window.location.href,
+                      )}`,
+                      color: "#0A66C2",
+                      icon: FaLinkedinIn,
+                    },
+
+                    {
+                      label: "TikTok",
+                      href: `https://www.tiktok.com/`,
+                      color: "#111111",
+                      icon: FaTiktok,
+                    },
+
+                    {
+                      label: "WhatsApp",
+                      href: `https://wa.me/?text=${encodeURIComponent(
+                        `${tl(item, "title")} ${window.location.href}`,
+                      )}`,
+                      color: "#25D366",
+                      icon: FaWhatsapp,
+                    },
+                  ].map(({ label, href, color, icon: Icon }) => (
                     <a
                       key={label}
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Share on ${label}`}
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold
-                                hover:scale-110 transition-transform duration-200"
+                      title={`Share on ${label}`}
+                      className=" w-11 h-11 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-200 shadow-sm "
                       style={{ background: color }}
                     >
-                      {icon}
+                      <Icon className="w-5 h-5" />
                     </a>
                   ))}
                 </div>
@@ -394,11 +502,19 @@ export default function NewsDetailPage() {
                     className="font-bold text-sm mb-4 uppercase tracking-wide"
                     style={{ color: "var(--color-primary)" }}
                   >
-                    {isEvent ? "More Events" : "Related News"}
+                    {isEvent
+                      ? t("news.detail.related.event.articles", "More Events")
+                      : t("news.detail.related.news.articles", "Related News")}
                   </h3>
                   <div className="space-y-3">
                     {related.map((r) => (
-                      <RelatedCard key={r.id} item={r} tl={tl} />
+                      <RelatedCard
+                        key={r.id}
+                        item={r}
+                        tl={tl}
+                        t={t}
+                        lang={lang}
+                      />
                     ))}
                   </div>
                 </div>
@@ -413,16 +529,24 @@ export default function NewsDetailPage() {
                 }}
               >
                 <div className="text-3xl mb-3">🎓</div>
-                <h3 className="font-bold mb-2">Ready to start?</h3>
+                <h3 className="font-bold mb-2">
+                  {t("news.detail.cta.aside.title", "Ready to start?")}
+                </h3>
                 <p className="text-sm opacity-80 mb-4">
-                  Get a free consultation with our experts today.
+                  {t(
+                    "news.detail.cta.aside.subtitle",
+                    "Get a free consultation with our experts today.",
+                  )}
                 </p>
                 <Link
                   to="/contact"
-                  className="inline-block px-5 py-2 rounded-xl font-bold text-sm"
-                  style={{ background: "var(--color-accent)", color: "#fff" }}
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:scale-105"
+                  style={{
+                    background: "var(--color-accent)",
+                    boxShadow: "0 6px 20px rgba(232,150,10,0.35)",
+                  }}
                 >
-                  Free Consultation →
+                  {t("nav.free.consultation", "Free Consultation")} →
                 </Link>
               </div>
             </aside>

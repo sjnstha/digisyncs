@@ -199,6 +199,7 @@ class NewsEvent(models.Model):
     event_location = models.CharField(max_length=300, blank=True)
     event_location_ja = models.CharField(max_length=300, blank=True)
     event_location_ne = models.CharField(max_length=300, blank=True)
+    google_maps_url = models.URLField(blank=True)
     published_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)

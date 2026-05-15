@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { SiteProvider } from "./context/SiteContext";
 import { useSite } from "./context/SiteContext";
+import { useLang } from "./hooks/useLang.js";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/layout/ScrollToTop";
@@ -19,7 +20,8 @@ import NewsDetailPage from "./pages/News/DetailPage";
 // import ContactPage from "./pages/Contact/index";
 
 function AppShell() {
-  const { loading, error } = useSite();
+  const { config, loading, error } = useSite();
+  const tl = useLang();
 
   if (loading) return <LoadingSpinner fullPage />;
 
@@ -44,23 +46,37 @@ function AppShell() {
     );
 
   return (
-    <div style={{ fontFamily: "var(--font-site)", color: "var(--color-text)" }}>
-      <ScrollToTop /> {/* ← scrolls to top on every page change */}
-      <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/news/:slug" element={<NewsDetailPage />} />
-          {/* <Route path="/gallery"  element={<GalleryPage />} /> */}
-          <Route path="/contact" element={<ContactPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <>
+      <Helmet>
+        <title>{tl(config, "site_name")}</title>
+
+        {/* {config?.site_description && (
+          <meta name="description" content={tl(config, "site_description")} />
+        )} */}
+
+        {config?.logo_url && <link rel="icon" href={config.logo_url} />}
+      </Helmet>
+
+      <div
+        style={{ fontFamily: "var(--font-site)", color: "var(--color-text)" }}
+      >
+        <ScrollToTop /> {/* ← scrolls to top on every page change */}
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/news/:slug" element={<NewsDetailPage />} />
+            {/* <Route path="/gallery"  element={<GalleryPage />} /> */}
+            <Route path="/contact" element={<ContactPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }
 
