@@ -301,6 +301,11 @@ export default function Footer() {
             {tl(config, "copyright_text") ||
               `© ${new Date().getFullYear()} ${tl(config, "site_name")}. All rights reserved.`}
           </p>
+          <span className="hidden sm:block opacity-40">|</span>
+          <p className="text-xs text-slate-400">
+            {t("footer.developer", "Designed & Developed by Sajan Shrestha")}
+          </p>
+          <span className="hidden sm:block opacity-40">|</span>
           <div className="flex gap-5">
             {nav.map((item) => {
               return (
