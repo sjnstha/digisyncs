@@ -224,7 +224,9 @@ function GalleryCard({ item, tl, t, onClick }) {
             ? t("gallery.badge.youtube", "Youtube")
             : item.type === "vimeo"
               ? t("gallery.badge.vimeo", "Vimeo")
-              : t("gallery.badge.image", item.type)}
+              : item.type === "video"
+                ? t("gallery.badge.video", "Video")
+                : t("gallery.badge.image", item.type)}
         </span>
       </div>
 
