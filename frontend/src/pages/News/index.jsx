@@ -8,6 +8,7 @@ import { useLang } from "../../hooks/useLang";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/seo/SEO";
 
 function NewsCard({ item, tl, t, lang }) {
   const isEvent = item.type === "event";
@@ -21,6 +22,10 @@ function NewsCard({ item, tl, t, lang }) {
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+      <SEO
+        title={t("news.title", "News & Event")}
+        description="Latest news, upcoming events and student success stories from 3 Star Group Nepal. Stay updated with our community."
+      />
       {/* Image / placeholder */}
       {item.cover_image_url ? (
         <div className="overflow-hidden h-48">

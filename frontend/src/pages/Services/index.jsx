@@ -5,6 +5,7 @@ import { useLang } from "../../hooks/useLang";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/seo/SEO";
 
 const SERVICE_ICONS = ["✈️", "📄", "📚", "🏆", "🏠", "💼"];
 
@@ -16,6 +17,10 @@ export default function ServicesPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
+      <SEO
+        title={t("nav.services", "Our Services")}
+        description="Study visa assistance, JLPT preparation, scholarship guidance and accommodation support. Everything for your Japan journey."
+      />
       <PageHero
         badge="WHAT WE OFFER"
         title={t("home.service.section_title", "Our Services")}

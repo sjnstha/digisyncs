@@ -5,6 +5,7 @@ import { useLang } from "../../hooks/useLang";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/seo/SEO";
 
 const LEVEL_META = {
   N5: {
@@ -69,6 +70,11 @@ export default function CoursesPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
+      <SEO
+        title={t("courses.page_title", "Japanese Language Courses")}
+        description="JLPT-aligned Japanese language courses from beginner N5 to advanced N2. Start your Japan journey with 3 Star Group Nepal."
+      />
+
       <PageHero
         badge="LANGUAGE COURSES"
         title={t("courses.page_title", "Japanese Language Courses")}

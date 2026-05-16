@@ -6,6 +6,7 @@ import { useLang } from "../../hooks/useLang";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import SectionTitle from "../../components/ui/SectionTitle";
+import SEO from "../../components/seo/SEO";
 
 import api from "../../api/client";
 
@@ -109,6 +110,10 @@ export default function ContactPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
+      <SEO
+        title={t("nav.contact", "Contact")}
+        description="Get a free consultation today. Contact 3 Star Group Nepal for Japan study abroad guidance. We respond within 24 hours."
+      />
       <PageHero
         badge="GET IN TOUCH"
         title={t("contact.title", "Reach Out to Us")}

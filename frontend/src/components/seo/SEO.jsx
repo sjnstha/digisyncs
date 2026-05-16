@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useSite } from "../../context/SiteContext";
+import { useLang } from "../../hooks/useLang";
 
 /**
  * Drop this into any page to set dynamic SEO meta tags.
@@ -10,18 +11,23 @@ import { useSite } from "../../context/SiteContext";
  */
 export default function SEO({ title, description, image, noIndex = false }) {
   const { config, siteData } = useSite();
+  const tl = useLang();
 
-  const siteName = config?.site_name || "3 Star Educational Consultant";
+  const siteName = tl(config, "site_name") || "3 Star Educational Consultant";
   const pageTitle = title
     ? `${title} | ${siteName}`
     : config?.meta_title || siteName;
   const pageDesc =
-    description || config?.meta_description || config?.tagline || "";
+    description || config?.meta_description || tl(config, "tagline") || "";
   const pageImage = image || config?.og_image_url || "";
   const canonical = config?.canonical_url || "";
 
   return (
     <Helmet>
+      <meta
+        name="google-site-verification"
+        content="G8jpi5kpiZ1Eg3Rb8upoCbZCkwJAxXVK_v--PJFiTyI"
+      />
       <title>{pageTitle}</title>
       {pageDesc && <meta name="description" content={pageDesc} />}
       {noIndex && <meta name="robots" content="noindex,nofollow" />}

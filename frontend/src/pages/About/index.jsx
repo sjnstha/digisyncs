@@ -7,6 +7,7 @@ import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PageHero from "../../components/ui/PageHero";
 import SectionTitle from "../../components/ui/SectionTitle";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/seo/SEO";
 
 function Avatar({ name, photoUrl }) {
   const initials = name
@@ -69,6 +70,10 @@ export default function AboutPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
+      <SEO
+        title={t("nav.about", "About")}
+        description="Learn about 3 Star Group Nepal — our mission, team and years of experience helping Nepali students achieve their Japan study dreams."
+      />
       <PageHero
         badge="OUR STORY"
         title={t("about.title", "About Us")}

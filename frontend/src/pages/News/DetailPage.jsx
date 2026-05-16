@@ -16,6 +16,7 @@ import { useSite } from "../../context/SiteContext";
 import { useLang } from "../../hooks/useLang";
 import { fetchNewsDetail, fetchNewsAll } from "../../api/contentApi";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/seo/SEO";
 
 // ── Related card ─────────────────────────────────────────────────
 function RelatedCard({ item, tl, t, lang }) {
@@ -155,6 +156,14 @@ export default function NewsDetailPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-site)" }}>
+      <SEO
+        title={tl(item, "title")}
+        description={
+          tl(item, "excerpt") ||
+          "Read the latest news and events from 3 Star Group Nepal."
+        }
+      />
+
       {/* ── Hero banner ── */}
       <section
         className="relative overflow-hidden"

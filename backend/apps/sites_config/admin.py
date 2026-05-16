@@ -55,6 +55,13 @@ class SiteConfigInline(admin.StackedInline):
                 "footer_text_ne", "copyright_text_ne",
             ),
         }),
+        ("Seo", {
+            "fields": (
+                "meta_title", "meta_description",
+                "og_image", "canonical_url",
+                "google_analytics_id",
+            ),
+        }),
     )
 
 
