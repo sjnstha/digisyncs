@@ -166,7 +166,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {/* Language switcher pill */}
             <div
-              className="hidden sm:flex items-center rounded-xl px-2 py-1.5"
+              className="flex sm:flex items-center rounded-xl px-2 py-1.5"
               style={{
                 background: "rgba(0,0,0,0.05)",
                 border: "1px solid rgba(0,0,0,0.10)",
@@ -255,16 +255,6 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-
-              {/* Language switcher on mobile */}
-              <div className="sm:hidden mt-2 px-2">
-                <div
-                  className="rounded-xl p-2"
-                  style={{ background: "rgba(0,0,0,0.05)" }}
-                >
-                  <LanguageSwitcher />
-                </div>
-              </div>
 
               {/* CTA on mobile */}
               <div className="px-2 mt-3">
